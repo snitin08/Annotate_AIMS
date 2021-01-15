@@ -1,0 +1,30 @@
+* {
+    margin: 0px;
+    padding: 0px;
+}
+.mainDiv {
+    @media screen and (min-width:1200px) {
+        overflow-x: auto;
+        display: flex;
+    }
+    @media screen and (max-width:1200px){
+        display: block;
+        overflow-y: auto;
+    }
+    //margin-top: 100px;
+}
+
+#annotation_table {
+    margin: 20px;
+    padding: 10px;
+    max-height: 100vh;
+    overflow-y: auto;
+    vertical-align: middle;
+    
+}
+
+.cross {
+    font-weight: bold;
+    color: red;
+    
+}

@@ -1,0 +1,54 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Annotate</title>
+    <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+
+    
+</head>
+<body>
+    <script type="text/javascript" src="{% static 'js/index.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <div class="mainDiv">
+        <div style='display: block;'>
+            <canvas id="canvas" width="900" height="1200" style="border:1px solid #d3d3d3;">
+            Your browser does not support the HTML5 canvas tag.
+            </canvas>
+                        
+        </div>
+        <div>
+            <table id="annotation_table" class="table table-striped table-hover">
+                <thead>
+                    <tr class="bg-primary">
+                        <th>startX</th>
+                        <th>startY</th>
+                        <th>width</th> 
+                        <th>height</th>
+                        <th>Label</th>      
+                        <th>X</th>                                                
+                    </tr>
+                </thead>
+                <form action="{% url 'annotate:annotate' %}" method="post" id='coordinate_form'>
+                    {% csrf_token %}
+                    <tbody id="annotation_table_body">
+                    
+                    </tbody>
+                    <button form="coordinate_form" style="margin:25px;" type="submit" class="btn btn-primary">SUBMIT</button>
+                </form>
+            </table>
+            
+            <datalist id="labelOptions">
+                <option value="Start Of Table">Start Of Table</option>
+                <option value="End Of Table">End Of Table</option>
+            </datalist>
+        </div>
+    </div>
+
+    
+</body>
+</html>
