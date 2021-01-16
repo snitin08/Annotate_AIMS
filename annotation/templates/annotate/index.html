@@ -12,11 +12,27 @@
     
 </head>
 <body>
+    <!-- have to add styling here-->
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+            {% endfor %}
+    </ul>
+    {% endif %}
     <script type="text/javascript" src="{% static 'js/index.js' %}"></script>
     <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <div id="pdf-meta">
+        <div id="pdf-buttons">
+            <button id="pdf-prev">Previous</button>
+            <button id="pdf-next">Next</button>
+        </div>
+        <div id="page-count-container">Page <div id="pdf-current-page"></div> </div>
+        </div>
+    </div>
     <div class="mainDiv">
         <div style='display: block;'>
-            <canvas id="canvas" width="900" height="1200" style="border:1px solid #d3d3d3;">
+            <canvas id="canvas" width="900" height="1200" style="border:5px solid #d3d3d3;">
             Your browser does not support the HTML5 canvas tag.
             </canvas>
                         
