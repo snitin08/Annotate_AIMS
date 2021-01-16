@@ -135,7 +135,6 @@ function showPage(page_no) {
     
     imageObj = new Image();
     imageObj.src = '/media/page-' + _CURRENT_PAGE.toString() + '.jpeg';
-    console.log(UrlExists(imageObj.src));
     if(UrlExists(imageObj.src)==false){
         --_CURRENT_PAGE;
         showPage(_CURRENT_PAGE);
@@ -212,3 +211,40 @@ function getnex() {
     }
     showPage(++_CURRENT_PAGE);
 };
+
+function exportTableToExcel() {
+    annotations['Page' + _CURRENT_PAGE.toString()] = new Map();
+    curpagecoors = annotations['Page' + _CURRENT_PAGE.toString()];
+    for (let i of coordinates.keys()) {
+        coordinate = coordinates.get(i.toString());
+        var $row = $("tr[id=" + i + "]");
+        $tds = $row.find("td:nth-child(5) input[type='text']");
+        coordinate[4] = $tds.val();
+        curpagecoors.set(i.toString(), [coordinate[0], coordinate[1], coordinate[2], coordinate[3], coordinate[4]]);
+    }
+    output = new Map();
+    for (var i in annotations) {
+        output[i] = [];
+        for (let j of annotations[i]){
+            let tempmap = new Map();
+            x = j[1];
+            tempmap['width'] = x[2];
+            tempmap['height'] = x[1];
+            tempmap['left'] = x[0];
+            tempmap['top'] = x[1];
+            output[i].push(tempmap);
+        }
+    }
+    var string = JSON.stringify(output);
+    //create a blob object representing the data as a JSON string
+    var file = new Blob([string], {
+        type: 'application/json'
+    });
+    // trigger a click event on an <a> tag to open the file explorer
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(file);
+    a.download = 'data.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+}
