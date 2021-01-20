@@ -4,6 +4,8 @@ window.onload = function() {
 
     canvas = document.getElementById('canvas');
     ctx = canvas.getContext('2d');
+    ctx.font = "30px Arial"
+    ctx.fillStyle = "#FF0000";
     prev = document.getElementById('pdf-prev');
     next = document.getElementById('pdf-next');
     rect = {};
@@ -44,7 +46,7 @@ window.onload = function() {
                     <td><button class='cross' onclick='removeAnnotation("+id+")'> X </button></td>\
                 </tr>"
             );
-        coordinates.set(id.toString(),[rect.startX,rect.startY,rect.w,rect.h,""]);
+        coordinates.set(id.toString(),[rect.startX,rect.startY,rect.w,rect.h,"UNLABELLED"]);
         id++;
     }
 
@@ -57,12 +59,12 @@ window.onload = function() {
             {
                 coordinate = coordinates.get(i.toString());
                 
-                ctx.strokeStyle = 'red';
+                ctx.strokeStyle = 'green';
                 ctx.strokeRect(coordinate[0], coordinate[1], coordinate[2], coordinate[3]);
             }             
             rect.w = (e.pageX - this.offsetLeft) - rect.startX;
             rect.h = (e.pageY - this.offsetTop) - rect.startY;
-            ctx.strokeStyle = 'red';
+            ctx.strokeStyle = 'green';
             ctx.strokeRect(rect.startX, rect.startY, rect.w, rect.h);                
         }
     }
@@ -76,21 +78,26 @@ function ShowRect(id)
 {
     ctx.clearRect(0, 0, 900, 1200);                
     ctx.drawImage(imageObj, 0, 0);   
-    
     for(let i of coordinates.keys())
     {
         coordinate = coordinates.get(i.toString());
         
-        ctx.strokeStyle = 'red';
+        ctx.strokeStyle = 'green';
         ctx.strokeRect(coordinate[0], coordinate[1], coordinate[2], coordinate[3]);
     }             
     id = id.toString();
     coordinate = coordinates.get(id);
+    var $row = $("tr[id=" + id + "]");
+    $tds = $row.find("td:nth-child(5) input[type='text']");
+    coordinate[4] = $tds.val();
     if(!coordinate)
         return;
-    ctx.lineWidth = 5;
-    ctx.strokeStyle = 'green';
+    //ctx.lineWidth = 5;
+    ctx.strokeStyle = 'red';
+    ctx.font = "30px Arial"
+    ctx.fillStyle = "#FF0000";
     ctx.strokeRect(coordinate[0],coordinate[1],coordinate[2],coordinate[3]);
+    ctx.fillText(coordinate[4], coordinate[0], coordinate[1]);
     ctx.lineWidth = 1;
 }
 
@@ -106,7 +113,7 @@ function removeAnnotation(id)
     {
         coordinate = coordinates.get(i.toString());
         
-        ctx.strokeStyle = 'red';
+        ctx.strokeStyle = 'green';
         ctx.strokeRect(coordinate[0], coordinate[1], coordinate[2], coordinate[3]);
     }
     
@@ -163,7 +170,7 @@ function showPage(page_no) {
                     </tr>"
                 )
                 coordinates.set(i.toString(), [coordinate[0], coordinate[1], coordinate[2], coordinate[3],coordinate[4]]);
-                ctx.strokeStyle = 'red';
+                ctx.strokeStyle = 'green';
                 ctx.strokeRect(coordinate[0], coordinate[1], coordinate[2], coordinate[3]);
                 id = Math.max(id,i)+1;
             }
@@ -229,9 +236,10 @@ function exportTableToExcel() {
             let tempmap = new Map();
             x = j[1];
             tempmap['width'] = x[2];
-            tempmap['height'] = x[1];
+            tempmap['height'] = x[3];
             tempmap['left'] = x[0];
             tempmap['top'] = x[1];
+            tempmap['label'] = x[4];
             output[i].push(tempmap);
         }
     }
