@@ -1,4 +1,4 @@
-from django.shortcuts import render,HttpResponse
+from django.shortcuts import render,redirect,HttpResponse
 from django.contrib import messages
 from annotation.settings import BASE_DIR,MEDIA_ROOT
 from pdf2image import convert_from_path
@@ -10,13 +10,11 @@ def annotate(request):
         return render(request, 'annotate/index.html',{})
     else:
         data = request.POST
-        print(data)
         startX = data.getlist('startX')
         startY = data.getlist('startY')
         w = data.getlist('w')
         h = data.getlist('h')
         label = data.getlist('label')
-        print(list(zip(startX,startY,w,h,label)))
         return HttpResponse("OK")
 
 def upload_pdf(request):    
@@ -45,7 +43,6 @@ def upload_pdf(request):
             page.save(picture_path+filename, 'JPEG')
             # os.remove(filename)                              #comment if u want to operate on extracted images
             image_counter = image_counter + 1
-        messages.info(request, 'Upload PDF successful')
-        return HttpResponse("OK")
+        return redirect('http://127.0.0.1:8000/annotate/')
     else:
         return render(request,"annotate/upload_pdf.html",{})

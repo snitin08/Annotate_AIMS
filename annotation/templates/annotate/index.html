@@ -23,9 +23,12 @@
     <script type="text/javascript" src="{% static 'js/index.js' %}"></script>
     <link rel="stylesheet" href="{% static 'css/index.css' %}">
     <div id="pdf-meta">
+        <form action="/annotate/upload_pdf" method="get">
+            <input type="submit" value="Upload New PDF" name="Upload New PDF" id="uploadnewpdf" />
+        </form>
         <div id="pdf-buttons">
-            <button id="pdf-prev">Previous</button>
-            <button id="pdf-next">Next</button>
+            <button id="pdf-prev" class="btn btn-primary">Previous</button>
+            <button id="pdf-next" class="btn btn-primary">Next</button>
         </div>
         <div id="page-count-container">Page <div id="pdf-current-page"></div> </div>
         </div>
@@ -54,11 +57,12 @@
                     <tbody id="annotation_table_body">
                     
                     </tbody>
-                    <button form="coordinate_form" style="margin:25px;" type="submit" class="btn btn-primary" hidden="hidden">SUBMIT</button>
-                    <button type="button" id="export" onclick="exportTableToExcel('annotation_table_body')">Export List</button>
+                    <button form="coordinate_form" style="margin:20px;" type="submit" class="btn btn-primary" hidden="hidden">SUBMIT</button>
+                    <button type="button" id="export" style="margin:20px;" class="btn btn-primary" onclick="exportTableToExcel('annotation_table_body')">Export List</button>
                 </form>
             </table>
-            
+            <span class="colslabel">No. of Columns</span>
+            <input type="number" id="noofcolumns" name="noofcolumns" value="0">
             <datalist id="labelOptions">
                 <option value="Start Of Table">Start Of Table</option>
                 <option value="End Of Table">End Of Table</option>

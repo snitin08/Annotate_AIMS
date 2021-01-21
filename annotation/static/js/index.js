@@ -243,6 +243,11 @@ function exportTableToExcel() {
             output[i].push(tempmap);
         }
     }
+    if (document.getElementById('noofcolumns').value<0){
+        alert('Number of Columns cannot be negative');
+        return;
+    }
+    output["No of Columns"] = document.getElementById('noofcolumns').value;
     var string = JSON.stringify(output);
     //create a blob object representing the data as a JSON string
     var file = new Blob([string], {
