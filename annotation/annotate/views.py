@@ -45,7 +45,7 @@ def upload_pdf(request):
             page.save(picture_path+filename, 'JPEG')
             # os.remove(filename)                              #comment if u want to operate on extracted images
             image_counter = image_counter + 1
-        return redirect('http://127.0.0.1:8000/annotate/')
+        return redirect('annotate:annotate')
     else:
         return render(request,"annotate/upload_pdf.html",{})
 

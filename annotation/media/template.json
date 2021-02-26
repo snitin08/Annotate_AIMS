@@ -2,49 +2,47 @@
   "Page1": [
     {
       "width": 277,
-      "height": 44,
-      "left": 326,
+      "height": 45,
+      "left": 320,
       "top": 218,
       "label": "Company Name"
     },
     {
-      "width": 395,
-      "height": 107,
-      "left": 274,
+      "width": 413,
+      "height": 100,
+      "left": 268,
       "top": 266,
-      "label": "Company address"
+      "label": "Company Address"
     },
     {
-      "width": 392,
-      "height": 53,
-      "left": 260,
-      "top": 379,
-      "label": "Order Number"
+      "width": 396,
+      "height": 54,
+      "left": 263,
+      "top": 377,
+      "label": "Invoice Number"
     },
     {
-      "width": 700,
-      "height": 37,
+      "width": 711,
+      "height": 40,
+      "left": 102,
+      "top": 654,
+      "label": "Subtotal"
+    },
+    {
+      "width": 705,
+      "height": 32,
       "left": 108,
-      "top": 508,
+      "top": 509,
       "label": "Start Of Table"
     },
     {
-      "width": 713,
-      "height": 32,
-      "left": 107,
-      "top": 584,
+      "width": 700,
+      "height": 39,
+      "left": 108,
+      "top": 580,
       "label": "End Of Table"
     },
-    {
-      "width": 716,
-      "height": 34,
-      "left": 104,
-      "top": 656,
-      "label": "Subtotal"
-    },
-    { "width": 719, "height": 33, "left": 100, "top": 698, "label": "Tax" },
-    { "width": 717, "height": 42, "left": 100, "top": 773, "label": "Total" }
+    { "width": 721, "height": 46, "left": 100, "top": 767, "label": "Total" }
   ],
-  "ncols":3
-
+  "ncols": "3"
 }

@@ -15,6 +15,25 @@
     </title>
 </head>
 <body>
+    <nav class="navbar navbar-expand-sm navbar-light bg-warning" style="font-weight: bold;">
+        <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId" aria-controls="collapsibleNavId"
+            aria-expanded="false" aria-label="Toggle navigation"></button>
+        <div class="collapse navbar-collapse" id="collapsibleNavId">
+            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'annotate:annotate' %}">Annotate</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'annotate:upload_pdf' %}">Upload PDF</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'annotate:process_receipt' %}">Extract Details</a>
+                </li>
+                
+            </ul>
+            
+        </div>
+    </nav>
     {% block body_block %}
 
     {% endblock %}
