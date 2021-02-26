@@ -1,0 +1,50 @@
+{
+  "Page1": [
+    {
+      "width": 277,
+      "height": 44,
+      "left": 326,
+      "top": 218,
+      "label": "Company Name"
+    },
+    {
+      "width": 395,
+      "height": 107,
+      "left": 274,
+      "top": 266,
+      "label": "Company address"
+    },
+    {
+      "width": 392,
+      "height": 53,
+      "left": 260,
+      "top": 379,
+      "label": "Order Number"
+    },
+    {
+      "width": 700,
+      "height": 37,
+      "left": 108,
+      "top": 508,
+      "label": "Start Of Table"
+    },
+    {
+      "width": 713,
+      "height": 32,
+      "left": 107,
+      "top": 584,
+      "label": "End Of Table"
+    },
+    {
+      "width": 716,
+      "height": 34,
+      "left": 104,
+      "top": 656,
+      "label": "Subtotal"
+    },
+    { "width": 719, "height": 33, "left": 100, "top": 698, "label": "Tax" },
+    { "width": 717, "height": 42, "left": 100, "top": 773, "label": "Total" }
+  ],
+  "ncols":3
+
+}

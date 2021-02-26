@@ -1,0 +1,42 @@
+.form_element {
+    display: block;
+    margin: 2em;
+}
+
+.form_element label {
+    display: block;
+    margin: 1em 0;
+    font-weight: bold;
+}
+
+.form_element input{
+    color: black;
+}
+
+::-webkit-file-upload-button {
+    background: rgb(50, 107, 192);
+    color: white;
+    padding: 0.4em;
+    border: none;
+}
+
+::-webkit-file-upload-button:hover {
+    background: rgb(13, 13, 148);
+    cursor: pointer;
+}
+
+button {
+    margin: 2em;
+    padding: 0.4em;
+    display: block;
+    background: rgb(18, 155, 59);
+    color:white;
+    border: none;
+    
+}
+
+button:hover {
+    background: rgb(6, 85, 38);
+    color: white;
+    cursor: pointer;
+}

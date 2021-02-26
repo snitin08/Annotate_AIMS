@@ -1,0 +1,28 @@
+{% extends 'annotate/base.html' %}
+{% load static %}
+
+{% block title_block %}
+    Upload files
+{% endblock %}
+
+{% block body_block %}
+    <link rel="stylesheet" href="{% static 'css/upload_files.css' %}">
+    <div class="upload_form">
+        <form action="#" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form_element">
+                <label for="pdf_file">Upload PDF</label>
+                <input id="pdf_file" type="file" name="file1" required placeholder="PDF File">
+            </div>
+
+            <div class="form_element">
+                <label for="template_file">Upload Template (in JSON)</label>
+                <input id="template_file" type="file" name="file2" required placeholder="Template File">
+            </div>
+
+            <button type="submit">SUBMIT</button>
+
+        </form>
+    </div>
+
+{% endblock %}

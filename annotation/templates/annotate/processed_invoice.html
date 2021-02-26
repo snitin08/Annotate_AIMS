@@ -1,0 +1,42 @@
+{% extends 'annotate/base.html' %}
+{% load static %}
+
+{% block title_block %}
+    Extracted details
+{% endblock %}
+
+{% block body_block %}
+    <link rel="stylesheet" href="{% static 'css/processed_invoice.css' %}">
+    <div class="container">
+        <form method="POST" action="#">
+            {% csrf_token %}
+
+            
+            {% for key,value in annotation.items %}
+                <div class="form-group">
+                <label for="{{key}}">{{key}}</label>
+                <input type="text" name="{{key}}" id="{{key}}" class="form-control" placeholder="{{key}}" value="{{value}}">              
+                </div>
+            {% endfor %}
+
+            {% if table %}
+                <table>
+                    {% for product in table %}
+                        <tr>
+                            {% for header in product %}
+                                <td>{{header}}</td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </table>
+            {% endif %}
+
+            <div class="below-table">
+                {% for value in below_table %}
+                    <p>{{value}}</p>
+                {% endfor %}
+            </div>
+        </form>
+    </div>
+
+{% endblock %}
