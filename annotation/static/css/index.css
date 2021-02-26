@@ -27,8 +27,58 @@
   vertical-align: middle;
 }
 
+.colslabel {
+  margin: 20px;
+  border: 1px solid transparent;
+  padding: .375rem .75rem;
+  font-size: 1rem;
+  border-radius: .25rem;
+  color: rgb(0, 0, 0);
+  background-color: #0de1fd;
+  border-color: #0d6efd;
+}
+
+#uploadnewpdf{
+  margin: 10px;
+  border: 1px solid transparent;
+  padding: .375rem .75rem;
+  font-size: 1rem;
+  border-radius: .25rem;
+  color: rgb(0, 0, 0);
+  background-color: #fcf700;
+  border-color: #0d6efd;
+}
+
 .cross {
   font-weight: bold;
   color: red;
+}
+
+#pdf-meta {
+	overflow: hidden;
+	margin: 0 0 10px 0;
+}
+
+#pdf-buttons {
+  float: left;
+  margin-left: 340px;
+  margin-top: 30px;
+}
+
+#page-count-container {
+  float: right;
+  margin-right: 540px;
+  margin-top: 30px;
+  border: 1px solid transparent;
+  padding: .375rem .75rem;
+  font-size: 1rem;
+  border-radius: .25rem;
+  color: rgb(0, 0, 0);
+  background-color: #0de1fd;
+  border-color: #0d6efd;
+}
+
+#pdf-current-page {
+	display: inline-block;
 }
 /*# sourceMappingURL=index.css.map */
