@@ -11,7 +11,7 @@
         <form method="POST" action="#">
             {% csrf_token %}
 
-            
+            <h2>Extracted fields</h2>
             {% for key,value in annotation.items %}
                 <div class="form-group">
                 <label for="{{key}}">{{key}}</label>
@@ -20,7 +20,8 @@
             {% endfor %}
 
             {% if table %}
-                <table>
+                <h2>Products table</h2>
+                <table class="table table-striped">
                     {% for product in table %}
                         <tr>
                             {% for header in product %}
@@ -32,6 +33,7 @@
             {% endif %}
 
             <div class="below-table">
+                <h2>Below Table</h2>
                 {% for value in below_table %}
                     <p>{{value}}</p>
                 {% endfor %}
