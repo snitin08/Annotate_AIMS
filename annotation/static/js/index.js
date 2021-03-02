@@ -13,7 +13,6 @@ window.onload = function() {
     annotations = new Map();
     id = 0;
     var _CURRENT_PAGE = 1;
-       
 
     function init() {
         canvas.addEventListener('mousedown', mouseDown, false);
@@ -22,6 +21,20 @@ window.onload = function() {
         prev.addEventListener('click',getprev,false);
         next.addEventListener('click', getnex, false);
         _CURRENT_PAGE = 1;
+        $.getJSON("/media/currentcoors.json", function (json) {
+            uploadedcoors = json; 
+            for (const [key, value] of Object.entries(uploadedcoors)){
+                ind = 0  
+                if(key!=='ncols'){
+                    tempmap = new Map();
+                    for (let ele of value){
+                        tempmap.set(ind.toString(), [ele['left'],ele['top'],ele['width'],ele['height'],ele['label']])
+                        ind++
+                    }
+                    annotations[key] = tempmap;
+                }
+            }
+        });
         showPage(1);
     }
 
@@ -52,11 +65,9 @@ window.onload = function() {
         if (drag) {
             ctx.clearRect(0, 0, 900, 1200);                
             ctx.drawImage(imageObj, 0, 0);   
-            
             for(let i of coordinates.keys())
             {
                 coordinate = coordinates.get(i.toString());
-                
                 ctx.strokeStyle = 'green';
                 ctx.strokeRect(coordinate[0], coordinate[1], coordinate[2], coordinate[3]);
             }             
@@ -66,9 +77,6 @@ window.onload = function() {
             ctx.strokeRect(rect.startX, rect.startY, rect.w, rect.h);                
         }
     }
-
-    
-//
     init();
 }
 
@@ -79,7 +87,6 @@ function ShowRect(id)
     for(let i of coordinates.keys())
     {
         coordinate = coordinates.get(i.toString());
-        
         ctx.strokeStyle = 'green';
         ctx.strokeRect(coordinate[0], coordinate[1], coordinate[2], coordinate[3]);
     }             
@@ -90,7 +97,6 @@ function ShowRect(id)
     coordinate[4] = $tds.val();
     if(!coordinate)
         return;
-    //ctx.lineWidth = 5;
     ctx.strokeStyle = 'red';
     ctx.font = "30px Arial"
     ctx.fillStyle = "#FF0000";
@@ -110,7 +116,6 @@ function removeAnnotation(id)
     for(let i of coordinates.keys())
     {
         coordinate = coordinates.get(i.toString());
-        
         ctx.strokeStyle = 'green';
         ctx.strokeRect(coordinate[0], coordinate[1], coordinate[2], coordinate[3]);
     }
@@ -126,21 +131,12 @@ function UrlExists(url) {
 
 function showPage(page_no) {
     _CURRENT_PAGE = page_no;
-
-    // Disable Prev & Next buttons while page is being loaded
     $("#pdf-next, #pdf-prev").attr('disabled', 'disabled');
-
-    // While page is being rendered hide the canvas and show a loading message
-    
-
-    // Update current page in HTML
     $("#pdf-current-page").text(page_no);
-    
-    // Fetch the page
-    
     imageObj = new Image();
     imageObj.src = '/media/page-' + _CURRENT_PAGE.toString() + '.jpeg';
     if(UrlExists(imageObj.src)==false){
+        alert("This is Last Page")
         --_CURRENT_PAGE;
         showPage(_CURRENT_PAGE);
         $("#pdf-current-page").text(_CURRENT_PAGE);
@@ -196,6 +192,7 @@ function getprev() {
         }
         showPage(--_CURRENT_PAGE);
     }
+    else alert("This is First Page")
 };
 
 // Next page of the PDF

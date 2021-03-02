@@ -3,7 +3,7 @@ from django.contrib import messages
 from annotation.settings import BASE_DIR,MEDIA_ROOT
 from pdf2image import convert_from_path
 from .table_detect import *
-import os
+import os,json
 import subprocess
 
 # Create your views here.
@@ -23,11 +23,20 @@ def upload_pdf(request):
     if request.method == 'POST':
         data = request.POST
         files = request.FILES
-        file1 = request.FILES['file_name']
-        x = file1.read()
+        file1 = files.getlist('file_name')[0]
         f = open(BASE_DIR + '/media/current.pdf', 'wb')
+        x = file1.read()
         f.write(x)
         f.close()
+        if len(files.getlist('file_name')) == 2:
+            file2 = files.getlist('file_name')[1]
+            x = file2.read()
+            f = open(BASE_DIR + '/media/currentcoors.json', 'wb')
+            f.write(x)
+            f.close()
+        else:
+            if os.path.exists(BASE_DIR + '/media/currentcoors.json'):
+                os.remove(BASE_DIR + '/media/currentcoors.json')
         pages = convert_from_path(
             BASE_DIR+'/media/current.pdf', fmt="jpeg", size=(900,1200))
         picture_path = MEDIA_ROOT
