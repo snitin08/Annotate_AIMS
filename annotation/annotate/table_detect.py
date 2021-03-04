@@ -6,6 +6,8 @@ import pandas as pd
 import ast
 import regex as re
 
+tessdata_dir_config = '--psm 6 --tessdata-dir "C:\\Program Files\\Tesseract-OCR\\tessdata"'
+
 def get_annotations_json(path):
     import json
     annotate_dict = json.load(open(path))
@@ -25,8 +27,6 @@ def get_annotations_json(path):
             new_dict[k]=annotate_dict[k]
     print(new_dict)
     return new_dict
-
-# get_annotations_json(r"E:\Nitin\RVCE\Projects\PDF-OCR\annotation_tool\annotation\media\data.json")
 
 def colfilter(crds, image, NO_OF_COLS, ye):
     x,y,x1,y1 = crds
@@ -158,7 +158,7 @@ def get_text(annotate_dict, tmp_image, w, h):
             sb_img = cv2.bilateralFilter(sb_img,10,95,95)
             #cv2.imshow("TMP_IMG", sb_img)
             #cv2.waitKey()
-            d = pytesseract.image_to_data(sb_img, output_type=Output.DICT, lang='eng', config='--psm 6')
+            d = pytesseract.image_to_data(sb_img, output_type=Output.DICT, lang='Devanagari', config=tessdata_dir_config)
 #            cv2.rectangle(tmp4, (x-2, y-2), (x1+2, y1+2), (0, 0, 255), 1)
             text = ''
             for t in d['text']:
@@ -242,7 +242,7 @@ def find_table(tmp3, res, new_lst):
                                    interpolation = cv2.INTER_NEAREST)
             # cv2.imshow("Each Col", col)
             # cv2.waitKey()
-            d = pytesseract.image_to_data(col, output_type=Output.DICT, lang='eng', config='--psm 6')
+            d = pytesseract.image_to_data(col, output_type=Output.DICT, lang='Devanagari', config=tessdata_dir_config)
             # cv2.rectangle(tmp3, (ls[0]-1, ls[1]-1), (ls[2]+ls[0]+1, ls[1]+ls[3]+1), (0, 0, 255), 1)
             text = ''
             for t in d['text']:
@@ -267,7 +267,7 @@ def find_below_table(tmp_img, x):
         tmp = cv2.resize(tmp,(tmp.shape[1]*2, tmp.shape[0]*2), interpolation = cv2.INTER_NEAREST)
 #        cv2.imshow("below", tmp)
 #        cv2.waitKey()
-        d = pytesseract.image_to_data(tmp, output_type=Output.DICT, lang='eng', config='--psm 6')
+        d = pytesseract.image_to_data(tmp, output_type=Output.DICT, lang='Devanagari', config=tessdata_dir_config)
         text = ''
         for t in d['text']:
             text += t + ' '
