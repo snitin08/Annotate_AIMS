@@ -6,6 +6,7 @@ from .table_detect import *
 import os,json
 import subprocess
 
+
 # Create your views here.
 def annotate(request):
     if request.method == 'GET':
@@ -102,7 +103,7 @@ def process_invoice(filename, templatename):
     
     for image in images:
         image.save(str(BASE_DIR)+'\\media\\page_1.jpeg', 'JPEG')  
-        cmd = '"E:\Downloads\ImageMagic\ImageMagick-6.9.11-Q16-20201228T144714Z-001\ImageMagick-6.9.11-Q16\convert.exe" "E:/Nitin/RVCE/Projects/PDF-OCR/annotation_tool/annotation/media/page-1.jpeg" -type Grayscale -negate -define morphology:compose=darken -morphology Thinning "Rectangle:1x80+0+0<" -negate "E:/Nitin/RVCE/Projects/PDF-OCR/annotation_tool/annotation/media/page_1-t.jpeg"'
+        cmd = f'"E:\Downloads\ImageMagic\ImageMagick-6.9.11-Q16-20201228T144714Z-001\ImageMagick-6.9.11-Q16\convert.exe" "{BASE_DIR}/media/page-1.jpeg" -type Grayscale -negate -define morphology:compose=darken -morphology Thinning "Rectangle:1x80+0+0<" -negate "{BASE_DIR}/media/page_1-t.jpeg"'
         print(cmd)
         subprocess.call(cmd, shell=True)
         new_img = cv2.imread(str(BASE_DIR)+'\\media\\page_1-t.jpeg')

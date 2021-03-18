@@ -160,8 +160,8 @@ def get_text(annotate_dict, tmp_image, w, h):
             sb_img = cv2.bilateralFilter(sb_img,10,95,95)
             #cv2.imshow("TMP_IMG", sb_img)
             #cv2.waitKey()
-            pytesseract.pytesseract.tesseract_cmd = "E:\\Downloads\\Tesseract OCR\\tesseract.exe"
-            d = pytesseract.image_to_data(sb_img, output_type=Output.DICT, lang='eng', config='--psm 6')
+            # pytesseract.pytesseract.tesseract_cmd = "E:\\Downloads\\Tesseract OCR\\tesseract.exe"
+            d = pytesseract.image_to_data(sb_img, output_type=Output.DICT, lang='Devanagari_new', config='--psm 6')
 #            cv2.rectangle(tmp4, (x-2, y-2), (x1+2, y1+2), (0, 0, 255), 1)
             text = ''
             for t in d['text']:
