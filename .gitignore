@@ -3,3 +3,5 @@ annotation/annotation/__pycache__
 annotation/annotate/__pycache__
 annotation/db.sqlite3
 annotation/db.sqlite3
+.vscode/
+.idea/

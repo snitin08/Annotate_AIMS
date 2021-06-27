@@ -8,6 +8,8 @@ class Coordinate(EmbeddedDocument):
     h = IntField(min_value=0)
     label = StringField(max_length=50)
 
+
+
 class Template(Document):
     name = StringField(max_length=50,required=True)
     coordinates = EmbeddedDocumentListField(Coordinate)
