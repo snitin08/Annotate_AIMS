@@ -5,3 +5,5 @@ annotation/db.sqlite3
 annotation/db.sqlite3
 .vscode/
 .idea/
+test.ipynb
+invoice_process.ipynb
