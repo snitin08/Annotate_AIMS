@@ -30,20 +30,20 @@
 .colslabel {
   margin: 20px;
   border: 1px solid transparent;
-  padding: .375rem .75rem;
+  padding: 0.375rem 0.75rem;
   font-size: 1rem;
-  border-radius: .25rem;
+  border-radius: 0.25rem;
   color: rgb(0, 0, 0);
   background-color: #0de1fd;
   border-color: #0d6efd;
 }
 
-#uploadnewpdf{
+#uploadnewpdf {
   margin: 10px;
   border: 1px solid transparent;
-  padding: .375rem .75rem;
+  padding: 0.375rem 0.75rem;
   font-size: 1rem;
-  border-radius: .25rem;
+  border-radius: 0.25rem;
   color: rgb(0, 0, 0);
   background-color: #fcf700;
   border-color: #0d6efd;
@@ -55,8 +55,8 @@
 }
 
 #pdf-meta {
-	overflow: hidden;
-	margin: 0 0 10px 0;
+  overflow: hidden;
+  margin: 0 0 10px 0;
 }
 
 #pdf-buttons {
@@ -70,15 +70,15 @@
   margin-right: 540px;
   margin-top: 30px;
   border: 1px solid transparent;
-  padding: .375rem .75rem;
+  padding: 0.375rem 0.75rem;
   font-size: 1rem;
-  border-radius: .25rem;
+  border-radius: 0.25rem;
   color: rgb(0, 0, 0);
   background-color: #0de1fd;
   border-color: #0d6efd;
 }
 
 #pdf-current-page {
-	display: inline-block;
+  display: inline-block;
 }
 /*# sourceMappingURL=index.css.map */

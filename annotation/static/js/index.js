@@ -32,6 +32,7 @@ window.onload = function () {
         if (key !== "ncols") {
           tempmap = new Map();
           for (let ele of value) {
+            if(ele["IMAGE_ACTUAL_WIDTH"]!==undefined || ele["IMAGE_ACTUAL_HEIGHT"] !== undefined)continue;
             tempmap.set(ind.toString(), [
               ele["left"],
               ele["top"],
@@ -198,7 +199,6 @@ function showPage(page_no) {
 
       imgDisplayHeight = 1200;
       imgDisplayWidth = 900;
-
       pagecoors = annotations["Page" + _CURRENT_PAGE.toString()];
       if (typeof pagecoors !== "undefined") {
         for (let i of pagecoors.keys()) {
@@ -321,18 +321,22 @@ function exportTableToExcel() {
   output = new Map();
   for (var i in annotations) {
     output[i] = [];
-    for (let j of annotations[i]) {
+    for (let j of annotations[i]){
       let tempmap = new Map();
       x = j[1];
-      tempmap["width"] = Math.floor((x[2] * imgActualWidth) / imgDisplayWidth);
-      tempmap["height"] = Math.floor(
-        (x[3] * imgActualHeight) / imgDisplayHeight
-      );
-      tempmap["left"] = Math.floor((x[0] * imgActualWidth) / imgDisplayWidth);
-      tempmap["top"] = Math.floor((x[1] * imgActualHeight) / imgDisplayHeight);
-      tempmap["label"] = x[4];
+      tempmap['width'] = x[2];
+      tempmap['height'] = x[3];
+      tempmap['left'] = x[0];
+      tempmap['top'] = x[1];
+      tempmap['label'] = x[4];
       output[i].push(tempmap);
     }
+    tempimageObj = new Image();
+    tempimageObj.src = "/media/page-" + i.slice(-1) + ".jpeg";
+    let tempmap = new Map();
+    tempmap['IMAGE_ACTUAL_WIDTH'] = tempimageObj.width;
+    tempmap['IMAGE_ACTUAL_HEIGHT'] = tempimageObj.height;
+    output[i].push(tempmap);
   }
   if (document.getElementById("noofcolumns").value < 0) {
     alert("Number of Columns cannot be negative");
