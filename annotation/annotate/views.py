@@ -13,8 +13,6 @@ import math
 IMG_DISPLAY_WIDTH = 900
 IMG_DISPLAY_HEIGHT = 1200
 
-# Create your views here.
-
 
 def annotate(request):
     if request.method == "GET":
