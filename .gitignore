@@ -3,5 +3,10 @@ annotation/annotation/__pycache__
 annotation/annotate/__pycache__
 annotation/db.sqlite3
 annotation/db.sqlite3
-.idea/
 .vscode/
+.idea/
+.test.ipynb
+.invoice_process.ipynb
+.ipynb_checkpoints/invoice_process-checkpoint.ipynb
+.ipynb_checkpoints/test-checkpoint.ipynb
+

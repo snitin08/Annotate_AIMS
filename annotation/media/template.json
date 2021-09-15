@@ -1,1 +1,12 @@
-{"Page1":[{"width":728,"height":34,"left":102,"top":433,"label":"Start Of Table"}],"ncols":"4"}
+{
+  "Page1": [
+    {
+      "width": 728,
+      "height": 34,
+      "left": 102,
+      "top": 433,
+      "label": "Start Of Table"
+    }
+  ],
+  "ncols": "4"
+}
