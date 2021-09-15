@@ -41,8 +41,7 @@ def colfilter(crds, image, NO_OF_COLS, ye):
     tmp3 = np.copy(image)
     sub_image1 = tmp3[y:y1, x:x1]
     sub_image = cv2.cvtColor(sub_image1, cv2.COLOR_BGR2GRAY)
-    _, th = cv2.threshold(sub_image, 0, 255.0,
-                          cv2.THRESH_BINARY | cv2.THRESH_OTSU)
+    _, th = cv2.threshold(sub_image, 0, 255.0, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
     kernel = np.ones((3, 5), np.uint8)
     th = cv2.erode(th, kernel, iterations=5)
     th = cv2.dilate(th, kernel, iterations=5)
@@ -169,7 +168,7 @@ def get_text(annotate_dict, tmp_image, w, h):
     ind = 0
     result = dict()
     for ind in range(len(annotate_dict) - 1):
-        del annotate_dict["Page" + str(ind + 1)]["Start Of Table"]
+        # del annotate_dict["Page" + str(ind + 1)]["Start Of Table"]
         coord = list(annotate_dict["Page" + str(ind + 1)].values())
         labels = list(annotate_dict["Page" + str(ind + 1)].keys())
         for crds, label in zip(coord, labels):
@@ -228,8 +227,7 @@ def find_table(tmp3, res, new_lst):
         #        cv2.imshow("Each Row", sub_image)
         #        cv2.waitKey()
         tmp_image = cv2.cvtColor(sub_image, cv2.COLOR_BGR2GRAY)
-        _, th = cv2.threshold(tmp_image, 0, 255.0,
-                              cv2.THRESH_BINARY | cv2.THRESH_OTSU)
+        _, th = cv2.threshold(tmp_image, 0, 255.0, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
         kernel = np.ones((3, 5), np.uint8)
         th = cv2.erode(th, kernel, iterations=5)
         th = cv2.dilate(th, kernel, iterations=5)
