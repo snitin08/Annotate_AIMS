@@ -320,6 +320,8 @@ function exportTableToExcel() {
   }
   output = new Map();
   for (var i in annotations) {
+    tempimageObj = new Image();
+    tempimageObj.src = "/media/page-" + i.slice(-1) + ".jpeg";
     output[i] = [];
     for (let j of annotations[i]){
       let tempmap = new Map();
@@ -331,17 +333,21 @@ function exportTableToExcel() {
       tempmap['label'] = x[4];
       output[i].push(tempmap);
     }
-    tempimageObj = new Image();
-    tempimageObj.src = "/media/page-" + i.slice(-1) + ".jpeg";
-    let tempmap = new Map();
-    tempmap['IMAGE_ACTUAL_WIDTH'] = tempimageObj.width;
-    tempmap['IMAGE_ACTUAL_HEIGHT'] = tempimageObj.height;
-    output[i].push(tempmap);
+    if(UrlExists(tempimageObj.src) == true){
+      let tempmap = new Map();
+      p = $(tempimageObj).ready(function(){
+          return {width: tempimageObj.width, height: tempimageObj.height};
+      });
+      tempmap["IMAGE_ACTUAL_WIDTH"] = p[0]['width'];
+      tempmap["IMAGE_ACTUAL_HEIGHT"] = p[0]['height'];
+      output[i].push(tempmap);
+    }
   }
   if (document.getElementById("noofcolumns").value < 0) {
     alert("Number of Columns cannot be negative");
     return;
   }
+  console.log(output)
   output["ncols"] = document.getElementById("noofcolumns").value;
   var string = JSON.stringify(output);
   //create a blob object representing the data as a JSON string
