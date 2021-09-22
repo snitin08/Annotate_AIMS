@@ -6,7 +6,7 @@ import pandas as pd
 import ast
 import regex as re
 
-pytesseract.pytesseract.tesseract_cmd = "E:\\Downloads\\Tesseract OCR\\tesseract.exe"
+# pytesseract.pytesseract.tesseract_cmd = "E:\\Downloads\\Tesseract OCR\\tesseract.exe"
 
 
 def get_annotations_json(path):
@@ -41,7 +41,8 @@ def colfilter(crds, image, NO_OF_COLS, ye):
     tmp3 = np.copy(image)
     sub_image1 = tmp3[y:y1, x:x1]
     sub_image = cv2.cvtColor(sub_image1, cv2.COLOR_BGR2GRAY)
-    _, th = cv2.threshold(sub_image, 0, 255.0, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
+    _, th = cv2.threshold(sub_image, 0, 255.0,
+                          cv2.THRESH_BINARY | cv2.THRESH_OTSU)
     kernel = np.ones((3, 5), np.uint8)
     th = cv2.erode(th, kernel, iterations=5)
     th = cv2.dilate(th, kernel, iterations=5)
@@ -61,9 +62,9 @@ def colfilter(crds, image, NO_OF_COLS, ye):
     li = list()
     for idx in range(len(contours)):
         x, y, w, h = cv2.boundingRect(contours[idx])
-        mask[y : y + h, x : x + w] = 0
+        mask[y: y + h, x: x + w] = 0
         cv2.drawContours(mask, contours, idx, (255, 255, 255), -1)
-        r = float(cv2.countNonZero(mask[y : y + h, x : x + w])) / (w * h)
+        r = float(cv2.countNonZero(mask[y: y + h, x: x + w])) / (w * h)
         if r > 0.4:
             li.append((x, y, w, h))
             ct += 1
@@ -113,12 +114,13 @@ def table_detect(rgb):
     abc = np.copy(rgb)
     for idx in range(len(contours)):
         x, y, w, h = cv2.boundingRect(contours[idx])
-        mask[y : y + h, x : x + w] = 0
+        mask[y: y + h, x: x + w] = 0
         cv2.drawContours(mask, contours, idx, (255, 255, 255), -1)
-        r = float(cv2.countNonZero(mask[y : y + h, x : x + w])) / (w * h)
+        r = float(cv2.countNonZero(mask[y: y + h, x: x + w])) / (w * h)
 
         if r > 0.4 and w > 2 and h > 2:  # hardcoded
-            cv2.rectangle(abc, (x - 2, y - 2), (x + w + 2, y + h + 2), (0, 0, 255), 1)
+            cv2.rectangle(abc, (x - 2, y - 2),
+                          (x + w + 2, y + h + 2), (0, 0, 255), 1)
             TEXT.append((x, y, w, h))
     # cv2.imwrite("/Users/nishith/cv/Lib/site-packages/mod_img.jpg",abc)
     # cv2.imshow('rects', abc)
@@ -132,7 +134,8 @@ def table_detect(rgb):
         while (
             i < len(TEXT) - 1
             and abs(
-                (TEXT[i][1] + TEXT[i][3] // 2) - (TEXT[i + 1][1] + TEXT[i + 1][3] // 2)
+                (TEXT[i][1] + TEXT[i][3] // 2) -
+                (TEXT[i + 1][1] + TEXT[i + 1][3] // 2)
             )
             <= 10
         ):
@@ -154,7 +157,8 @@ def table_detect(rgb):
         y1, y2, y3, y4 = max(txts, key=lambda x: x[1] + x[3])[:]
         ymax = y2 + y4
         new_crd.append((xmin, ymin, xmax, ymax))
-        cv2.rectangle(tmp2, (xmin - 1, ymin - 1), (xmax + 1, ymax + 1), (0, 0, 255), 1)
+        cv2.rectangle(tmp2, (xmin - 1, ymin - 1),
+                      (xmax + 1, ymax + 1), (0, 0, 255), 1)
 
     #    cv2.imshow("rows", tmp2)
     #    cv2.waitKey()
@@ -169,11 +173,13 @@ def get_text(annotate_dict, tmp_image, w, h):
     result = dict()
     for ind in range(len(annotate_dict) - 1):
         # del annotate_dict["Page" + str(ind + 1)]["Start Of Table"]
+        if "Start Of Table" in annotate_dict["Page" + str(ind + 1)]:
+            del annotate_dict["Page" + str(ind + 1)]["Start Of Table"]
         coord = list(annotate_dict["Page" + str(ind + 1)].values())
         labels = list(annotate_dict["Page" + str(ind + 1)].keys())
         for crds, label in zip(coord, labels):
             x, y, x1, y1 = crds
-            sb_img = tmp3[y - 4 : y1 + 4, x - 4 : x1 + 4]
+            sb_img = tmp3[y - 4: y1 + 4, x - 4: x1 + 4]
             #            sb_img = cv2.resize(sb_img,(sb_img.shape[1]*2, sb_img.shape[0]*2),
             #                               interpolation = cv2.INTER_NEAREST)
             sb_img = cv2.bilateralFilter(sb_img, 10, 95, 95)
@@ -181,7 +187,7 @@ def get_text(annotate_dict, tmp_image, w, h):
             # cv2.waitKey()
             # pytesseract.pytesseract.tesseract_cmd = "E:\\Downloads\\Tesseract OCR\\tesseract.exe"
             d = pytesseract.image_to_data(
-                sb_img, output_type=Output.DICT, lang="Devanagari_new", config="--psm 6"
+                sb_img, output_type=Output.DICT, lang="eng_layer", config="--psm 6"
             )
             #            cv2.rectangle(tmp4, (x-2, y-2), (x1+2, y1+2), (0, 0, 255), 1)
             text = ""
@@ -222,12 +228,13 @@ def find_table(tmp3, res, new_lst):
     tab_result = list()
     for crds in new_lst:
         x, y, x1, y1 = crds
-        sub_image = tmp3[y - 1 : y1 + 1, x - 1 : x1 + 1]
-        resultant = res[y - 1 : y1 + 1, x - 1 : x1 + 1]
+        sub_image = tmp3[y - 1: y1 + 1, x - 1: x1 + 1]
+        resultant = res[y - 1: y1 + 1, x - 1: x1 + 1]
         #        cv2.imshow("Each Row", sub_image)
         #        cv2.waitKey()
         tmp_image = cv2.cvtColor(sub_image, cv2.COLOR_BGR2GRAY)
-        _, th = cv2.threshold(tmp_image, 0, 255.0, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
+        _, th = cv2.threshold(tmp_image, 0, 255.0,
+                              cv2.THRESH_BINARY | cv2.THRESH_OTSU)
         kernel = np.ones((3, 5), np.uint8)
         th = cv2.erode(th, kernel, iterations=5)
         th = cv2.dilate(th, kernel, iterations=5)
@@ -251,9 +258,10 @@ def find_table(tmp3, res, new_lst):
         li = list()
         for idx in range(len(contours)):
             xe, ye, we, he = cv2.boundingRect(contours[idx])
-            mask[ye : ye + he, xe : xe + we] = 0
+            mask[ye: ye + he, xe: xe + we] = 0
             cv2.drawContours(mask, contours, idx, (255, 255, 255), -1)
-            r = float(cv2.countNonZero(mask[ye : ye + he, xe : xe + we])) / (we * he)
+            r = float(cv2.countNonZero(
+                mask[ye: ye + he, xe: xe + we])) / (we * he)
             if r > 0.4:
                 li.append((xe, ye, we, he))
         li.sort(key=lambda x: -x[2] - x[3])
@@ -276,7 +284,7 @@ def find_table(tmp3, res, new_lst):
         contouredImage = tmp3.copy()
         for ele in li:
             x, y, w, h = ele
-            col = sbi[y - 2 : y + h + 2, x - 2 : x + w + 2]
+            col = sbi[y - 2: y + h + 2, x - 2: x + w + 2]
             col = cv2.resize(
                 col,
                 (col.shape[1] * 2, col.shape[0] * 2),
@@ -285,7 +293,7 @@ def find_table(tmp3, res, new_lst):
             # cv2.imshow("Each Col", col)
             # cv2.waitKey()
             d = pytesseract.image_to_data(
-                col, output_type=Output.DICT, lang="eng", config="--psm 6"
+                col, output_type=Output.DICT, lang="eng_layer", config="--psm 6"
             )
             # cv2.rectangle(
             #     contouredImage, (x, y), (x + w + 1, y + h + 1), (0, 0, 255), 1
@@ -308,14 +316,14 @@ def find_below_table(tmp_img, x):
     for c in x:
         x, y, x1, y1 = c
         # cv2.rectangle(tmp_img, (x-1, y-1), (x1+1, y1+1), (0, 0, 255), 1)
-        tmp = tmp_img[y - 2 : y1 + 2, x - 2 : x1 + 2]
+        tmp = tmp_img[y - 2: y1 + 2, x - 2: x1 + 2]
         tmp = cv2.resize(
             tmp, (tmp.shape[1] * 2, tmp.shape[0] * 2), interpolation=cv2.INTER_NEAREST
         )
         #        cv2.imshow("below", tmp)
         #        cv2.waitKey()
         d = pytesseract.image_to_data(
-            tmp, output_type=Output.DICT, lang="eng", config="--psm 6"
+            tmp, output_type=Output.DICT, lang="eng_layer", config="--psm 6"
         )
         text = ""
         for t in d["text"]:
