@@ -10,3 +10,4 @@ annotation/db.sqlite3
 .ipynb_checkpoints/invoice_process-checkpoint.ipynb
 .ipynb_checkpoints/test-checkpoint.ipynb
 
+annotation/media/tables/

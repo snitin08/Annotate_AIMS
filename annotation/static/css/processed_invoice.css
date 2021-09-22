@@ -1,28 +1,35 @@
 .form-group {
-    margin: 2em;
+  margin: 2em;
 }
 
 .form-group label {
-    margin: 1em 0;
+  margin: 1em 0;
+}
+
+.table-img {
+  padding: 0;
+  display: block;
+  margin: 5em auto;
+  max-height: 100%;
+  max-width: 100%;
 }
 
 table {
-    padding: 1em;
+  padding: 1em;
 }
 
 td {
-    padding: 0.3em;
+  padding: 0.3em;
 }
 
 .below-table {
-    margin: 2em 0;
+  margin: 2em 0;
 }
 
 label {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 input {
-    width: 250px;
+  width: 250px;
 }
-

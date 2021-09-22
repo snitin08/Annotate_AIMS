@@ -1,25 +1,26 @@
-{% extends 'annotate/base.html' %}
-{% load static %}
+{% extends 'annotate/base.html' %} {% load static %} {% block title_block %}
+Extracted details {% endblock %} {% block body_block %}
+<link rel="stylesheet" href="{% static 'css/processed_invoice.css' %}" />
+<div class="container">
+  <form method="POST" action="#">
+    {% csrf_token %}
 
-{% block title_block %}
-    Extracted details
-{% endblock %}
+    <h2>Extracted fields</h2>
+    {% for key,value in annotation.items %}
+    <div class="form-group">
+      <label for="{{key}}">{{key}}</label>
+      <input
+        type="text"
+        name="{{key}}"
+        id="{{key}}"
+        class="form-control"
+        placeholder="{{key}}"
+        value="{{value}}"
+      />
+    </div>
+    {% endfor %}
 
-{% block body_block %}
-    <link rel="stylesheet" href="{% static 'css/processed_invoice.css' %}">
-    <div class="container">
-        <form method="POST" action="#">
-            {% csrf_token %}
-
-            <h2>Extracted fields</h2>
-            {% for key,value in annotation.items %}
-                <div class="form-group">
-                <label for="{{key}}">{{key}}</label>
-                <input type="text" name="{{key}}" id="{{key}}" class="form-control" placeholder="{{key}}" value="{{value}}">              
-                </div>
-            {% endfor %}
-
-            {% if table %}
+    <!-- {% if table %}
                 <h2>Products table</h2>
                 <table class="table table-striped">
                     {% for product in table %}
@@ -30,15 +31,23 @@
                         </tr>
                     {% endfor %}
                 </table>
-            {% endif %}
+            {% endif %} -->
 
-            <div class="below-table">
-                <h2>Below Table</h2>
-                {% for value in below_table %}
-                    <p>{{value}}</p>
-                {% endfor %}
-            </div>
-        </form>
+    {% if table %} {% for table_image in table %}
+    <h2>Table {{forloop.counter}}</h2>
+    <img
+      src="{% get_media_prefix %}{{table_image}}"
+      class="img-responsive table-img"
+    />
+    {% endfor %} {% endif %}
+
+    <div class="below-table">
+      <h2>Below Table</h2>
+      {% for value in below_table %}
+      <p>{{value}}</p>
+      {% endfor %}
     </div>
+  </form>
+</div>
 
 {% endblock %}
