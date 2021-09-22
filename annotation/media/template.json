@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 {"Page1": [{"width": 0, "height": 0, "left": 0, "top": 0, "label": "address"}, {"width": 0, "height": 0, "left": 0, "top": 0, "label": "customer name"}, {"width": 0, "height": 0, "left": 0, "top": 0, "label": "date"}], "ncols": "0"}
+=======
+{"Page1": [{"width": 473, "height": 71, "left": 668, "top": 170, "label": "c1"}, {"width": 524, "height": 178, "left": 592, "top": 250, "label": "c2"}, {"width": 238, "height": 90, "left": 1394, "top": 1680, "label": "newp1"}], "Page2": [{"width": 340, "height": 121, "left": 957, "top": 690, "label": "c3"}, {"width": 150, "height": 35, "left": 1470, "top": 861, "label": "c4"}, {"width": 331, "height": 104, "left": 1337, "top": 2057, "label": "new"}], "ncols": "0"}
+>>>>>>> bb04ddb5c606d138d2e170bbef4d3e81ce7d7f67

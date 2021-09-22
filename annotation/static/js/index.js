@@ -15,6 +15,7 @@ window.onload = function () {
   imageObj = null;
   coordinates = new Map();
   annotations = new Map();
+  pageDimensions = new Map();
   id = 0;
   var _CURRENT_PAGE = 1;
 
@@ -179,11 +180,18 @@ function showPage(page_no) {
   imageObj.src = "/media/page-" + _CURRENT_PAGE.toString() + ".jpeg";
 
   if (UrlExists(imageObj.src) == false) {
-    alert("This is Last Page");
-    --_CURRENT_PAGE;
-    showPage(_CURRENT_PAGE);
-    $("#pdf-current-page").text(_CURRENT_PAGE);
-    $("#pdf-next, #pdf-prev").removeAttr("disabled");
+    if(page_no === 1){
+      alert("No PDF Uploaded, Please upload PDF and then continue");
+      document.location.replace('upload_pdf');
+      return;
+    }
+    else{
+      alert("This is Last Page");
+      --_CURRENT_PAGE;  
+      showPage(_CURRENT_PAGE);
+      $("#pdf-current-page").text(_CURRENT_PAGE);
+      $("#pdf-next, #pdf-prev").removeAttr("disabled");
+    }
   } else {
     id = 0;
     imageObj.onload = function () {
@@ -196,6 +204,9 @@ function showPage(page_no) {
       imgActualWidth = imageObj.width;
 
       console.log("Show page actuals", imgActualWidth, imgActualHeight);
+      pageDimensions["Page" + _CURRENT_PAGE.toString()] = [];
+      pageDimensions["Page" + _CURRENT_PAGE.toString()].push(imgActualWidth);
+      pageDimensions["Page" + _CURRENT_PAGE.toString()].push(imgActualHeight);
 
       imgDisplayHeight = 1200;
       imgDisplayWidth = 900;
@@ -318,6 +329,7 @@ function exportTableToExcel() {
       coordinate[4],
     ]);
   }
+  console.log(pageDimensions)
   output = new Map();
   for (var i in annotations) {
     output[i] = [];
@@ -331,17 +343,16 @@ function exportTableToExcel() {
       tempmap['label'] = x[4];
       output[i].push(tempmap);
     }
-    tempimageObj = new Image();
-    tempimageObj.src = "/media/page-" + i.slice(-1) + ".jpeg";
     let tempmap = new Map();
-    tempmap['IMAGE_ACTUAL_WIDTH'] = tempimageObj.width;
-    tempmap['IMAGE_ACTUAL_HEIGHT'] = tempimageObj.height;
+    tempmap["IMAGE_ACTUAL_WIDTH"] = pageDimensions[i][0];
+    tempmap["IMAGE_ACTUAL_HEIGHT"] = pageDimensions[i][1];
     output[i].push(tempmap);
   }
   if (document.getElementById("noofcolumns").value < 0) {
     alert("Number of Columns cannot be negative");
     return;
   }
+  console.log(output)
   output["ncols"] = document.getElementById("noofcolumns").value;
   var string = JSON.stringify(output);
   //create a blob object representing the data as a JSON string

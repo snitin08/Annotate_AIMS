@@ -6,7 +6,7 @@ import pandas as pd
 import ast
 import regex as re
 
-pytesseract.pytesseract.tesseract_cmd = "E:\\Downloads\\Tesseract OCR\\tesseract.exe"
+# pytesseract.pytesseract.tesseract_cmd = "E:\\Downloads\\Tesseract OCR\\tesseract.exe"
 
 
 def get_annotations_json(path):
@@ -169,6 +169,8 @@ def get_text(annotate_dict, tmp_image, w, h):
     result = dict()
     for ind in range(len(annotate_dict) - 1):
         # del annotate_dict["Page" + str(ind + 1)]["Start Of Table"]
+        if "Start Of Table" in annotate_dict["Page" + str(ind + 1)]:
+            del annotate_dict["Page" + str(ind + 1)]["Start Of Table"]
         coord = list(annotate_dict["Page" + str(ind + 1)].values())
         labels = list(annotate_dict["Page" + str(ind + 1)].keys())
         for crds, label in zip(coord, labels):
@@ -181,7 +183,7 @@ def get_text(annotate_dict, tmp_image, w, h):
             # cv2.waitKey()
             # pytesseract.pytesseract.tesseract_cmd = "E:\\Downloads\\Tesseract OCR\\tesseract.exe"
             d = pytesseract.image_to_data(
-                sb_img, output_type=Output.DICT, config="--psm 6"
+                sb_img, output_type=Output.DICT, lang="eng_layer", config="--psm 6"
             )
             #            cv2.rectangle(tmp4, (x-2, y-2), (x1+2, y1+2), (0, 0, 255), 1)
             text = ""
@@ -285,7 +287,7 @@ def find_table(tmp3, res, new_lst):
             # cv2.imshow("Each Col", col)
             # cv2.waitKey()
             d = pytesseract.image_to_data(
-                col, output_type=Output.DICT, lang="eng", config="--psm 6"
+                col, output_type=Output.DICT, lang="eng_layer", config="--psm 6"
             )
             # cv2.rectangle(
             #     contouredImage, (x, y), (x + w + 1, y + h + 1), (0, 0, 255), 1
@@ -315,7 +317,7 @@ def find_below_table(tmp_img, x):
         #        cv2.imshow("below", tmp)
         #        cv2.waitKey()
         d = pytesseract.image_to_data(
-            tmp, output_type=Output.DICT, lang="eng", config="--psm 6"
+            tmp, output_type=Output.DICT, lang="eng_layer", config="--psm 6"
         )
         text = ""
         for t in d["text"]:

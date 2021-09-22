@@ -52,11 +52,13 @@ def upload_pdf(request):
         del_image_counter = 1
         while True:
             if os.path.exists(
-                os.path.join(picture_path, "page-" + str(del_image_counter) + ".jpeg")
+                os.path.join(picture_path, "page-" +
+                             str(del_image_counter) + ".jpeg")
             ):
                 os.remove(
                     os.path.join(
-                        picture_path, "page-" + str(del_image_counter) + ".jpeg"
+                        picture_path, "page-" +
+                            str(del_image_counter) + ".jpeg"
                     )
                 )
                 del_image_counter += 1
@@ -152,21 +154,27 @@ def process_invoice(filename, templatename):
     images = convert_from_path(filename, dpi=300)
     annotate_dict = get_annotations_json(templatename)
     tab_result = list()
+    result = []
+    tables_path = []
     # print(len(images))
     if len(images) > 0:
+        if "Start Of Table" in annotate_dict["Page1"]:
+            start_of_table = annotate_dict["Page1"]["Start Of Table"][1]
+        else:
+            start_of_table = None
         result = get_text(annotate_dict, np.copy(images[0]), 900, 1200)
+        if start_of_table is not None:
+            for image in images:
+                image.save(str(BASE_DIR) + "\\media\\page_1.jpeg", "JPEG")
+                document_image = cv2.imread(str(BASE_DIR) + "\\media\\page_1.jpeg")
+                result = get_text(annotate_dict, document_image, 900, 1200)
+                recognize_structure(document_image)
+                table_border_detect.detect_border(document_image)
 
-        for image in images:
-            image.save(str(BASE_DIR) + "\\media\\page_1.jpeg", "JPEG")
-            document_image = cv2.imread(str(BASE_DIR) + "\\media\\page_1.jpeg")
-            result = get_text(annotate_dict, document_image, 900, 1200)
-            recognize_structure(document_image)
-            table_border_detect.detect_border(document_image)
+            # Get all files in the directory paths as a list
+            tables_path = []
+            for file in os.listdir(os.path.join(BASE_DIR, "media", "tables")):
+                tables_path.append(os.path.join("tables", file))
 
-        # Get all files in the directory paths as a list
-        tables_path = []
-        for file in os.listdir(os.path.join(BASE_DIR, "media", "tables")):
-            tables_path.append(os.path.join("tables", file))
-
-        table_border_detect.extract_text_ocr()
+            table_border_detect.extract_text_ocr()
     return result, tables_path, None
