@@ -181,7 +181,7 @@ def get_text(annotate_dict, tmp_image, w, h):
             # cv2.waitKey()
             # pytesseract.pytesseract.tesseract_cmd = "E:\\Downloads\\Tesseract OCR\\tesseract.exe"
             d = pytesseract.image_to_data(
-                sb_img, output_type=Output.DICT, lang="Devanagari_new", config="--psm 6"
+                sb_img, output_type=Output.DICT, config="--psm 6"
             )
             #            cv2.rectangle(tmp4, (x-2, y-2), (x1+2, y1+2), (0, 0, 255), 1)
             text = ""
