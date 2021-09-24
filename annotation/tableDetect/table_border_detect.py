@@ -64,6 +64,7 @@ def extract_text_ocr():
         table_text_file_path = os.path.join(
             tables_base_path, "table_text_{}.txt".format(file.split(".")[0])
         )
-        with open(table_text_file_path, "w") as f:
-            f.write(table_text)
+        # with open(table_text_file_path, "w") as f:
+        #     f.write(table_text)
+        # print(table_text)
     return extracted_text
