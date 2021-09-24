@@ -1,5 +1,1 @@
-<<<<<<< HEAD
-{"Page1":[{"width":165,"height":122,"left":364,"top":161,"label":"address"},{"width":152,"height":110,"left":173,"top":329,"label":"customer name"},{"width":188,"height":37,"left":513,"top":390,"label":"date"},{"IMAGE_ACTUAL_WIDTH":0,"IMAGE_ACTUAL_HEIGHT":0}],"ncols":"0"}
-=======
-{"Page1":[{"width":167,"height":26,"left":236,"top":62,"label":"c1"},{"width":185,"height":65,"left":209,"top":91,"label":"c2"},{"IMAGE_ACTUAL_WIDTH":2550,"IMAGE_ACTUAL_HEIGHT":3301}],"Page2":[{"width":120,"height":44,"left":338,"top":251,"label":"c3"},{"width":53,"height":13,"left":519,"top":313,"label":"c4"},{"width":117,"height":38,"left":472,"top":748,"label":"new"},{"IMAGE_ACTUAL_WIDTH":2550,"IMAGE_ACTUAL_HEIGHT":3301}],"ncols":"0"}
->>>>>>> bb04ddb5c606d138d2e170bbef4d3e81ce7d7f67
+{"Page1":[{"width":473,"height":23,"left":250,"top":152,"label":"Name"},{"IMAGE_ACTUAL_WIDTH":2550,"IMAGE_ACTUAL_HEIGHT":3301}],"ncols":"0"}

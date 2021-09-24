@@ -55,7 +55,9 @@ def extract_text_ocr():
         table_path = os.path.join(tables_base_path, file)
         image = cv2.imread(table_path)
         deskewed_image = deskewImage(image)
-        table_text = pytesseract.image_to_string(deskewed_image, lang="eng")
+        table_text = pytesseract.image_to_string(
+            deskewed_image, lang="eng_layer", config="--psm 6"
+        )
         extracted_text.append(table_text)
 
         # Write Extracted text to file
