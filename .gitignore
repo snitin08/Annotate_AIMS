@@ -8,5 +8,3 @@ annotation/db.sqlite3
 .invoice_process.ipynb
 .ipynb_checkpoints/invoice_process-checkpoint.ipynb
 .ipynb_checkpoints/test-checkpoint.ipynb
-
-annotation/media/tables/
