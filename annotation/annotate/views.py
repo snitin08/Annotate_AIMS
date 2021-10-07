@@ -141,7 +141,7 @@ def process_receipt(request):
         print(below_table)
         context = {
             "annotation": annotation,
-            "table": table,
+            "tables": table,
             "below_table": below_table,
         }
         return render(request, "annotate/processed_invoice.html", context)
@@ -152,25 +152,35 @@ def process_invoice(filename, templatename):
     annotate_dict = get_annotations_json(templatename)
     tab_result = list()
     result = []
-    tables_path = []
+    # list like tables [
+    #   {
+    #    "table_path": "media/table-1",
+    #     "text": "text",
+    #   }
+    # ]
+    tables = []
+
     # print(len(images))
+    extracted_text = []
     if len(images) > 0:
         if "Start Of Table" in annotate_dict["Page1"]:
             start_of_table = annotate_dict["Page1"]["Start Of Table"][1]
         else:
             start_of_table = None
-        result = get_text(annotate_dict, np.copy(images[0]), 900, 1200)
-        for image in images:
+        for i, image in enumerate(images):
             image.save(str(BASE_DIR) + "\\media\\page_1.jpeg", "JPEG")
             document_image = cv2.imread(str(BASE_DIR) + "\\media\\page_1.jpeg")
-            result = get_text(annotate_dict, document_image, 900, 1200)
             recognize_structure(document_image)
             table_border_detect.detect_border(document_image)
 
-            # Get all files in the directory paths as a list
+        result = get_text(annotate_dict, document_image)
+        # Get all files in the directory paths as a list
         tables_path = []
         for file in os.listdir(os.path.join(BASE_DIR, "media", "tables")):
             tables_path.append(os.path.join("tables", file))
 
-        table_border_detect.extract_text_ocr()
-    return result, tables_path, None
+        extracted_text = table_border_detect.extract_text_ocr()
+        for path, text in zip(tables_path, extracted_text):
+            tables.append({"table_path": path, "text": text.strip()})
+
+    return result, tables, None

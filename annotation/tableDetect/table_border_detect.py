@@ -54,17 +54,18 @@ def extract_text_ocr():
     for file in os.listdir(tables_base_path):
         table_path = os.path.join(tables_base_path, file)
         image = cv2.imread(table_path)
-        deskewed_image = deskewImage(image)
+        # deskewed_image = deskewImage(image)
         table_text = pytesseract.image_to_string(
-            deskewed_image, lang="eng_layer", config="--psm 6"
+            image, lang="eng_layer", config="--psm 6"
         )
         extracted_text.append(table_text)
 
         # Write Extracted text to file
         table_text_file_path = os.path.join(
-            tables_base_path, "table_text_{}.txt".format(file.split(".")[0])
+            tables_base_path, "table_text_{}".format(file.split(".")[0])
         )
         # with open(table_text_file_path, "w") as f:
         #     f.write(table_text)
-        # print(table_text)
+        print(table_text)
+
     return extracted_text

@@ -6,7 +6,7 @@ import pandas as pd
 import ast
 import regex as re
 
-# pytesseract.pytesseract.tesseract_cmd = "E:\\Downloads\\Tesseract OCR\\tesseract.exe"
+from annotation.settings import BASE_DIR
 
 
 def get_annotations_json(path):
@@ -161,18 +161,28 @@ def table_detect(rgb):
     return new_crd
 
 
-def get_text(annotate_dict, tmp_image, w, h):
+def get_text(annotate_dict, tmp_image):
     tmp3 = tmp_image
+
     #    tmp4 = np.copy(tmp3)
     #    print(tmp3.shape)
     ind = 0
     result = dict()
+    # clear the files in labels folder
+    import os
+    import glob
+
+    label_folder = os.path.join(BASE_DIR, "media", "labels")
+    for f in os.listdir(label_folder):
+        os.remove(os.path.join(label_folder, f))
     for ind in range(len(annotate_dict) - 1):
         # del annotate_dict["Page" + str(ind + 1)]["Start Of Table"]
         if "Start Of Table" in annotate_dict["Page" + str(ind + 1)]:
             del annotate_dict["Page" + str(ind + 1)]["Start Of Table"]
         coord = list(annotate_dict["Page" + str(ind + 1)].values())
         labels = list(annotate_dict["Page" + str(ind + 1)].keys())
+        tmp3 = cv2.imread(BASE_DIR + "/" + "\\media\\page-{}.jpeg".format(ind + 1))
+        label_index = 0
         for crds, label in zip(coord, labels):
             x, y, x1, y1 = crds
             sb_img = tmp3[y - 4 : y1 + 4, x - 4 : x1 + 4]
@@ -181,6 +191,11 @@ def get_text(annotate_dict, tmp_image, w, h):
             sb_img = cv2.bilateralFilter(sb_img, 10, 95, 95)
             # cv2.imshow("TMP_IMG", sb_img)
             # cv2.waitKey()
+            cv2.imwrite(
+                BASE_DIR + "\\media\\labels\\" + "label-{}.jpg".format(label),
+                sb_img,
+            )
+            label_index += 1
             # pytesseract.pytesseract.tesseract_cmd = "E:\\Downloads\\Tesseract OCR\\tesseract.exe"
             d = pytesseract.image_to_data(
                 sb_img, output_type=Output.DICT, lang="eng_layer", config="--psm 6"

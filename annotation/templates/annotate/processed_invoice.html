@@ -33,12 +33,13 @@ Extracted details {% endblock %} {% block body_block %}
                 </table>
             {% endif %} -->
 
-    {% if table %} {% for table_image in table %}
+    {% if tables %} {% for table_data in tables %}
     <h2>Table {{forloop.counter}}</h2>
     <img
-      src="{% get_media_prefix %}{{table_image}}"
+      src="{% get_media_prefix %}{{table_data.table_path}}"
       class="img-responsive table-img"
     />
+    <p>{{table_data.text}}</p>
     {% endfor %} {% endif %}
 
     <div class="below-table">

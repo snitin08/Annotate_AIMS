@@ -1,1 +1,24 @@
-{"Page1":[{"width":473,"height":23,"left":250,"top":152,"label":"Name"},{"IMAGE_ACTUAL_WIDTH":2550,"IMAGE_ACTUAL_HEIGHT":3301}],"ncols":"0"}
+{
+  "Page1": [
+    { "width": 160, "height": 76, "left": 100, "top": 235, "label": "name" },
+    {
+      "width": 175,
+      "height": 78,
+      "left": 67,
+      "top": 137,
+      "label": "company name"
+    },
+    { "IMAGE_ACTUAL_WIDTH": 2481, "IMAGE_ACTUAL_HEIGHT": 3508 }
+  ],
+  "Page2": [
+    {
+      "width": 250,
+      "height": 40,
+      "left": 507,
+      "top": 872,
+      "label": "subtotal"
+    },
+    { "IMAGE_ACTUAL_WIDTH": 2481, "IMAGE_ACTUAL_HEIGHT": 3508 }
+  ],
+  "ncols": "0"
+}
