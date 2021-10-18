@@ -1,1 +1,1 @@
-{"Page1": [{"width": 1371, "height": 60, "left": 705, "top": 423, "label": "name"}, {"width": 838, "height": 55, "left": 838, "top": 530, "label": "gst"}, {"width": 215, "height": 66, "left": 901, "top": 706, "label": "bill no"}], "ncols": "0"}
+{"Page1": [{"width": 410, "height": 46, "left": 688, "top": 162, "label": "name"}, {"width": 201, "height": 49, "left": 799, "top": 409, "label": "invoice"}], "ncols": "0"}

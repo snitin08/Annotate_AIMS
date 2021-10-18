@@ -256,15 +256,18 @@ def recognize_structure(img):
 
     # Retrieving the center of each column
     # center = [int(row[i][j][0] + row[i][j][2] / 2) for j in range(len(row[i])) if row[0]]
-    center = [
-        int(row[index][j][0] + row[index][j][2] / 2) for j in range(len(row[index]))
-    ]
-    # print("center",center)
+    center = None
+    if len(row) > 0:
+        center = [
+            int(row[index][j][0] + row[index][j][2] / 2) for j in range(len(row[index]))
+        ]
+        # print("center",center)
 
-    center = np.array(center)
-    center.sort()
-    # print("center.sort()", center)
-    # Regarding the distance to the columns center, the boxes are arranged in respective order
+    if center is not None:
+        center = np.array(center)
+        center.sort()
+        # print("center.sort()", center)
+        # Regarding the distance to the columns center, the boxes are arranged in respective order
 
     finalboxes = []
     for i in range(len(row)):
