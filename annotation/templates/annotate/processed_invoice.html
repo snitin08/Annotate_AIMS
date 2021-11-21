@@ -1,44 +1,43 @@
-{% extends 'annotate/base.html' %}
-{% load static %}
+{% extends 'annotate/base.html' %} {% load static %} {% block title_block %}
+Extracted details {% endblock %} {% block body_block %}
+<link rel="stylesheet" href="{% static 'css/processed_invoice.css' %}" />
+<div class="container">
+  <form method="POST" action="#">
+    {% csrf_token %}
 
-{% block title_block %}
-    Extracted details
-{% endblock %}
-
-{% block body_block %}
-    <link rel="stylesheet" href="{% static 'css/processed_invoice.css' %}">
-    <div class="container">
-        <form method="POST" action="#">
-            {% csrf_token %}
-
-            <h2>Extracted fields</h2>
-            {% for key,value in annotation.items %}
-                <div class="form-group">
-                <label for="{{key}}">{{key}}</label>
-                <input type="text" name="{{key}}" id="{{key}}" class="form-control" placeholder="{{key}}" value="{{value}}">              
-                </div>
-            {% endfor %}
-
-            {% if table %}
-                <h2>Products table</h2>
-                <table class="table table-striped">
-                    {% for product in table %}
-                        <tr>
-                            {% for header in product %}
-                                <td>{{header}}</td>
-                            {% endfor %}
-                        </tr>
-                    {% endfor %}
-                </table>
-            {% endif %}
-
-            <div class="below-table">
-                <h2>Below Table</h2>
-                {% for value in below_table %}
-                    <p>{{value}}</p>
-                {% endfor %}
-            </div>
-        </form>
+    <h2>Extracted fields</h2>
+    {% for annot in annotation %} {% for key,value in annot.items %}
+    <div class="form-group">
+      <label for="{{key}}">{{key}}</label>
+      <input
+        type="text"
+        name="{{key}}"
+        id="{{key}}"
+        class="form-control"
+        placeholder="{{key}}"
+        value="{{value}}"
+      />
     </div>
+    {% endfor %} {% endfor %} {% if table %}
+    <h2>Products table</h2>
+    <table class="table table-striped">
+      {% for product in table %}
+      <tr>
+        {% for header in product %}
+        <td>{{header}}</td>
+        {% endfor %}
+      </tr>
+      {% endfor %}
+    </table>
+    {% endif %}
+
+    <div class="below-table">
+      <h2>Below Table</h2>
+      {% for value in below_table %}
+      <p>{{value}}</p>
+      {% endfor %}
+    </div>
+  </form>
+</div>
 
 {% endblock %}
