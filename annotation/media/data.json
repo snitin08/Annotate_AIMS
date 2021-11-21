@@ -1,1 +1,22 @@
-{"Page1":[{"width":324,"height":31,"left":174,"top":513,"label":"Start Of Table"},{"width":553,"height":31,"left":171,"top":643,"label":"End Of Table"}],"ncols":"1"}
+{
+  "Page1": [
+    { "width": 493, "height": 149, "left": 192, "top": 194, "label": "1" },
+    {
+      "width": 553,
+      "height": 32,
+      "left": 147,
+      "top": 419,
+      "label": "Start Of Table"
+    },
+    {
+      "width": 534,
+      "height": 40,
+      "left": 149,
+      "top": 603,
+      "label": "End Of Table"
+    },
+    { "width": 540, "height": 39, "left": 153, "top": 747, "label": "2" },
+    { "IMAGE_ACTUAL_WIDTH": 2481, "IMAGE_ACTUAL_HEIGHT": 3508 }
+  ],
+  "ncols": "3"
+}
