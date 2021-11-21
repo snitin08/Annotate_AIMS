@@ -102,18 +102,19 @@ def process_receipt(request):
             IMG_ACTUAL_HEIGHT = pagedata[-1]["IMAGE_ACTUAL_HEIGHT"]
             IMG_ACTUAL_WIDTH = pagedata[-1]["IMAGE_ACTUAL_WIDTH"]
             for ele in pagedata[:-1:]:
-                ele["width"] = math.floor(
-                    (ele["width"] * IMG_ACTUAL_WIDTH) / IMG_DISPLAY_WIDTH
-                )
-                ele["height"] = math.floor(
-                    (ele["height"] * IMG_ACTUAL_HEIGHT) / IMG_DISPLAY_HEIGHT
-                )
-                ele["left"] = math.floor(
-                    (ele["left"] * IMG_ACTUAL_WIDTH) / IMG_DISPLAY_WIDTH
-                )
-                ele["top"] = math.floor(
-                    (ele["top"] * IMG_ACTUAL_HEIGHT) / IMG_DISPLAY_HEIGHT
-                )
+                if ele["label"] != "Start Of Table":
+                    ele["width"] = math.floor(
+                        (ele["width"] * IMG_ACTUAL_WIDTH) / IMG_DISPLAY_WIDTH
+                    )
+                    ele["height"] = math.floor(
+                        (ele["height"] * IMG_ACTUAL_HEIGHT) / IMG_DISPLAY_HEIGHT
+                    )
+                    ele["left"] = math.floor(
+                        (ele["left"] * IMG_ACTUAL_WIDTH) / IMG_DISPLAY_WIDTH
+                    )
+                    ele["top"] = math.floor(
+                        (ele["top"] * IMG_ACTUAL_HEIGHT) / IMG_DISPLAY_HEIGHT
+                    )
             # after coordinates scaled for that page delete the image size references
             del pagedata[-1]
         json_object = json.dumps(data)

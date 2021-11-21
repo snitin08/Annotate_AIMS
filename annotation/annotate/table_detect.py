@@ -1,3 +1,4 @@
+from numpy.core.fromnumeric import size
 import pytesseract
 from pytesseract import Output
 import numpy as np
@@ -6,7 +7,7 @@ import pandas as pd
 import ast
 import regex as re
 
-# tessdata_dir_config = '--psm 6 --tessdata-dir "E:\\Downloads\\Tesseract OCR\\tessdata"'
+pytesseract.pytesseract.tesseract_cmd = "E:\\Downloads\\Tesseract OCR\\tesseract.exe"
 
 
 def get_annotations_json(path):
@@ -31,7 +32,11 @@ def get_annotations_json(path):
     return new_dict
 
 
+# get_annotations_json(r"E:\Nitin\RVCE\Projects\PDF-OCR\annotation_tool\annotation\media\data.json")
+
+
 def colfilter(crds, image, NO_OF_COLS, ye):
+    image = cv2.resize(image, (900, 1200))
     x, y, x1, y1 = crds
     if y1 <= ye:
         return 0
@@ -93,6 +98,7 @@ def colfilter(crds, image, NO_OF_COLS, ye):
 
 def table_detect(rgb):
 
+    rgb = cv2.resize(rgb, (900, 1200))
     small = cv2.cvtColor(rgb, cv2.COLOR_BGR2GRAY)
     kernel = np.ones((1, 9), np.uint8)
     grad = cv2.morphologyEx(small, cv2.MORPH_GRADIENT, kernel)
@@ -153,8 +159,8 @@ def table_detect(rgb):
         new_crd.append((xmin, ymin, xmax, ymax))
         cv2.rectangle(tmp2, (xmin - 1, ymin - 1), (xmax + 1, ymax + 1), (0, 0, 255), 1)
 
-    #    cv2.imshow("rows", tmp2)
-    #    cv2.waitKey()
+    cv2.imwrite("all rows.png", tmp2)
+    # cv2.waitKey()
     return new_crd
 
 
@@ -172,8 +178,8 @@ def get_text(annotate_dict, tmp_image, w, h):
         for crds, label in zip(coord, labels):
             x, y, x1, y1 = crds
             sb_img = tmp3[y - 4 : y1 + 4, x - 4 : x1 + 4]
-            #    sb_img = cv2.resize(sb_img,(sb_img.shape[1]*2, sb_img.shape[0]*2),
-            #                       interpolation = cv2.INTER_NEAREST)
+            #            sb_img = cv2.resize(sb_img,(sb_img.shape[1]*2, sb_img.shape[0]*2),
+            #                               interpolation = cv2.INTER_NEAREST)
             sb_img = cv2.bilateralFilter(sb_img, 10, 95, 95)
             # cv2.imshow("TMP_IMG", sb_img)
             # cv2.waitKey()
@@ -217,7 +223,10 @@ def get_annotations_xlsx(path):
 
 
 def find_table(tmp3, res, new_lst):
+    tmp3 = cv2.resize(tmp3, (900, 1200))
+    res = cv2.resize(res, (900, 1200))
     tab_result = list()
+    marked_image = tmp3.copy()
     for crds in new_lst:
         x, y, x1, y1 = crds
         sub_image = tmp3[y - 1 : y1 + 1, x - 1 : x1 + 1]
@@ -284,7 +293,13 @@ def find_table(tmp3, res, new_lst):
             d = pytesseract.image_to_data(
                 col, output_type=Output.DICT, lang="eng_layer", config="--psm 6"
             )
-            # cv2.rectangle(tmp3, (ls[0]-1, ls[1]-1), (ls[2]+ls[0]+1, ls[1]+ls[3]+1), (0, 0, 255), 1)
+            # cv2.rectangle(
+            #     marked_image,
+            #     (ls[0] - 1, ls[1] - 1),
+            #     (ls[2] + ls[0] + 1, ls[1] + ls[3] + 1),
+            #     (0, 0, 255),
+            #     1,
+            # )
             text = ""
             for t in d["text"]:
                 text += t + " "
@@ -294,11 +309,12 @@ def find_table(tmp3, res, new_lst):
         tab_result.append(row)
     # cv2.imshow("Table Output", tmp3)
     # cv2.waitKey()
-    cv2.imwrite("output.png", tmp3)
+    cv2.imwrite("output.png", marked_image)
     return tab_result
 
 
 def find_below_table(tmp_img, x):
+    tmp_img = cv2.resize(tmp_img, (900, 1200))
     below_tab_result = list()
     for c in x:
         x, y, x1, y1 = c
