@@ -152,25 +152,32 @@ def process_receipt(request):
 def process_invoice(filename, templatename):
     images = convert_from_path(filename, dpi=300)
     annotate_dict = get_annotations_json(templatename)
-    tab_result = list()
-    # print(len(images))
+    print("Images length: ", len(images))
     if len(images) > 0:
         if "Start Of Table" in annotate_dict["Page1"]:
             start_of_table = annotate_dict["Page1"]["Start Of Table"][1]
         else:
             start_of_table = None
-        result = get_text(annotate_dict, np.copy(images[0]), 900, 1200)
+
         #
 
         extracted_text = []
-        if start_of_table is not None:
-            flg = False
-            below_tab_result = list()
-            for image in images:
-                image.save(str(BASE_DIR) + "\\media\\page_1.jpeg", "JPEG")
-                document_image = cv2.imread(str(BASE_DIR) + "\\media\\page_1.jpeg")
-                result = get_text(annotate_dict, document_image, 900, 1200)
-                extracted_text.append(result)
+        below_tab_result = []
+        tab_result = []
+        for i, image in enumerate(images):
+            if "Start Of Table" in annotate_dict["Page" + str(i + 1)]:
+                start_of_table = annotate_dict["Page" + str(i + 1)]["Start Of Table"][1]
+            else:
+                start_of_table = None
+
+            image.save(str(BASE_DIR) + "\\media\\page_1.jpeg", "JPEG")
+            document_image = cv2.imread(str(BASE_DIR) + "\\media\\page_1.jpeg")
+            result = get_text(
+                annotate_dict["Page" + str(i + 1)], document_image, 900, 1200
+            )
+            extracted_text.append(result)
+            if start_of_table is not None:
+                flg = False
                 cmd = f'"E:\Downloads\ImageMagic\ImageMagick-6.9.11-Q16-20201228T144714Z-001\ImageMagick-6.9.11-Q16\convert.exe" "{BASE_DIR}/media/page_1.jpeg" -type Grayscale -negate -define morphology:compose=darken -morphology Thinning "Rectangle:1x80+0+0<" -negate "{BASE_DIR}/media/page_1-t.jpeg"'
                 # print(cmd)
                 subprocess.call(cmd, shell=True)
@@ -197,8 +204,8 @@ def process_invoice(filename, templatename):
                 #     new_lst = new_lst[1:]
                 tab_result += find_table(tmp3, new_img2, new_lst)
                 if flg == False:
-                    below_tab_result = find_below_table(np.copy(new_img2), below_table)
+                    below_tab_result += find_below_table(np.copy(new_img2), below_table)
                     flg = True
-            return extracted_text, tab_result, below_tab_result
-        return result, None, None
+
+        return extracted_text, tab_result, below_tab_result
     return None, None, None

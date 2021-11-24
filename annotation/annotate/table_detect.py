@@ -7,6 +7,9 @@ import pandas as pd
 import ast
 import regex as re
 
+IMAGE_WIDTH = 900
+IMAGE_HEIGHT = 1200
+
 pytesseract.pytesseract.tesseract_cmd = "E:\\Downloads\\Tesseract OCR\\tesseract.exe"
 
 
@@ -36,7 +39,7 @@ def get_annotations_json(path):
 
 
 def colfilter(crds, image, NO_OF_COLS, ye):
-    image = cv2.resize(image, (900, 1200))
+    image = cv2.resize(image, (IMAGE_WIDTH, IMAGE_HEIGHT))
     x, y, x1, y1 = crds
     if y1 <= ye:
         return 0
@@ -98,7 +101,7 @@ def colfilter(crds, image, NO_OF_COLS, ye):
 
 def table_detect(rgb):
 
-    rgb = cv2.resize(rgb, (900, 1200))
+    rgb = cv2.resize(rgb, (IMAGE_WIDTH, IMAGE_HEIGHT))
     small = cv2.cvtColor(rgb, cv2.COLOR_BGR2GRAY)
     kernel = np.ones((1, 9), np.uint8)
     grad = cv2.morphologyEx(small, cv2.MORPH_GRADIENT, kernel)
@@ -170,11 +173,11 @@ def get_text(annotate_dict, tmp_image, w, h):
     #    print(tmp3.shape)
     ind = 0
     result = dict()
-    for ind in range(len(annotate_dict) - 1):
-        if "Start Of Table" in annotate_dict["Page" + str(ind + 1)]:
-            del annotate_dict["Page" + str(ind + 1)]["Start Of Table"]
-        coord = list(annotate_dict["Page" + str(ind + 1)].values())
-        labels = list(annotate_dict["Page" + str(ind + 1)].keys())
+    for ind in range(len(annotate_dict)):
+        if "Start Of Table" in annotate_dict:
+            del annotate_dict["Start Of Table"]
+        coord = list(annotate_dict.values())
+        labels = list(annotate_dict.keys())
         for crds, label in zip(coord, labels):
             x, y, x1, y1 = crds
             sb_img = tmp3[y - 4 : y1 + 4, x - 4 : x1 + 4]
@@ -223,8 +226,8 @@ def get_annotations_xlsx(path):
 
 
 def find_table(tmp3, res, new_lst):
-    tmp3 = cv2.resize(tmp3, (900, 1200))
-    res = cv2.resize(res, (900, 1200))
+    tmp3 = cv2.resize(tmp3, (IMAGE_WIDTH, IMAGE_HEIGHT))
+    res = cv2.resize(res, (IMAGE_WIDTH, IMAGE_HEIGHT))
     tab_result = list()
     marked_image = tmp3.copy()
     for crds in new_lst:
@@ -314,7 +317,7 @@ def find_table(tmp3, res, new_lst):
 
 
 def find_below_table(tmp_img, x):
-    tmp_img = cv2.resize(tmp_img, (900, 1200))
+    tmp_img = cv2.resize(tmp_img, (IMAGE_WIDTH, IMAGE_HEIGHT))
     below_tab_result = list()
     for c in x:
         x, y, x1, y1 = c
