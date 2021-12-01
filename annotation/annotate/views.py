@@ -102,7 +102,7 @@ def process_receipt(request):
             IMG_ACTUAL_HEIGHT = pagedata[-1]["IMAGE_ACTUAL_HEIGHT"]
             IMG_ACTUAL_WIDTH = pagedata[-1]["IMAGE_ACTUAL_WIDTH"]
             for ele in pagedata[:-1:]:
-                if ele["label"] != "Start Of Table":
+                if ele["label"] != "Start Of Table" and ele["label"] != "End Of Table":
                     ele["width"] = math.floor(
                         (ele["width"] * IMG_ACTUAL_WIDTH) / IMG_DISPLAY_WIDTH
                     )
@@ -153,6 +153,7 @@ def process_invoice(filename, templatename):
     images = convert_from_path(filename, dpi=300)
     annotate_dict = get_annotations_json(templatename)
     print("Images length: ", len(images))
+    print(annotate_dict)
     if len(images) > 0:
         if "Start Of Table" in annotate_dict["Page1"]:
             start_of_table = annotate_dict["Page1"]["Start Of Table"][1]
@@ -160,10 +161,10 @@ def process_invoice(filename, templatename):
             start_of_table = None
 
         if "End Of Table" in annotate_dict["Page1"]:
-            end_of_table = annotate_dict["Page1"]["Start Of Table"][1]
+            end_of_table = annotate_dict["Page1"]["End Of Table"][3]
         else:
             end_of_table = float('inf')
-
+        print("E: ",end_of_table)
         #
 
         extracted_text = []
@@ -176,10 +177,10 @@ def process_invoice(filename, templatename):
                 start_of_table = None
 
             if "End Of Table" in annotate_dict["Page" + str(i + 1)]:
-                end_of_table = annotate_dict["Page" + str(i + 1)]["End Of Table"][1] + annotate_dict["Page" + str(i + 1)]["End Of Table"][3]
+                end_of_table = annotate_dict["Page" + str(i + 1)]["End Of Table"][3]
             else:
                 end_of_table = float('inf')
-
+            print("E: ",end_of_table)
             image.save(str(BASE_DIR) + "\\media\\page_1.jpeg", "JPEG")
             document_image = cv2.imread(str(BASE_DIR) + "\\media\\page_1.jpeg")
             result = get_text(
@@ -188,7 +189,7 @@ def process_invoice(filename, templatename):
             extracted_text.append(result)
             if start_of_table is not None:
                 flg = False
-                cmd = f'"E:\Downloads\ImageMagic\ImageMagick-6.9.11-Q16-20201228T144714Z-001\ImageMagick-6.9.11-Q16\convert.exe" "{BASE_DIR}/media/page_1.jpeg" -type Grayscale -negate -define morphology:compose=darken -morphology Thinning "Rectangle:1x80+0+0<" -negate "{BASE_DIR}/media/page_1-t.jpeg"'
+                cmd = f'"C:\Program Files\ImageMagick-6.9.11-Q16\convert.exe" "{BASE_DIR}/media/page_1.jpeg" -type Grayscale -negate -define morphology:compose=darken -morphology Thinning "Rectangle:1x80+0+0<" -negate "{BASE_DIR}/media/page_1-t.jpeg"'
                 # print(cmd)
                 subprocess.call(cmd, shell=True)
                 new_img = cv2.imread(str(BASE_DIR) + "\\media\\page_1-t.jpeg")
