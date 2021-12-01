@@ -159,6 +159,11 @@ def process_invoice(filename, templatename):
         else:
             start_of_table = None
 
+        if "End Of Table" in annotate_dict["Page1"]:
+            end_of_table = annotate_dict["Page1"]["Start Of Table"][1]
+        else:
+            end_of_table = float('inf')
+
         #
 
         extracted_text = []
@@ -169,6 +174,11 @@ def process_invoice(filename, templatename):
                 start_of_table = annotate_dict["Page" + str(i + 1)]["Start Of Table"][1]
             else:
                 start_of_table = None
+
+            if "End Of Table" in annotate_dict["Page" + str(i + 1)]:
+                end_of_table = annotate_dict["Page" + str(i + 1)]["End Of Table"][1] + annotate_dict["Page" + str(i + 1)]["End Of Table"][3]
+            else:
+                end_of_table = float('inf')
 
             image.save(str(BASE_DIR) + "\\media\\page_1.jpeg", "JPEG")
             document_image = cv2.imread(str(BASE_DIR) + "\\media\\page_1.jpeg")
@@ -193,7 +203,7 @@ def process_invoice(filename, templatename):
                 new_lst = list()
                 below_table = list()
                 for x in new_crd:
-                    if colfilter(x, rgb, NO_OF_COLS, start_of_table) == int(NO_OF_COLS):
+                    if colfilter(x, rgb, NO_OF_COLS, start_of_table, end_of_table) == int(NO_OF_COLS):
                         new_lst.append(x)
                     elif x[3] > start_of_table:
                         below_table.append(x)

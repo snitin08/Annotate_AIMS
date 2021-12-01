@@ -38,10 +38,12 @@ def get_annotations_json(path):
 # get_annotations_json(r"E:\Nitin\RVCE\Projects\PDF-OCR\annotation_tool\annotation\media\data.json")
 
 
-def colfilter(crds, image, NO_OF_COLS, ye):
+def colfilter(crds, image, NO_OF_COLS, ye, ye1):
     image = cv2.resize(image, (IMAGE_WIDTH, IMAGE_HEIGHT))
     x, y, x1, y1 = crds
     if y1 <= ye:
+        return 0
+    if y1 > ye1:
         return 0
     tmp3 = np.copy(image)
     sub_image1 = tmp3[y:y1, x:x1]
