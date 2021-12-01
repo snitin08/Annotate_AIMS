@@ -181,10 +181,8 @@ def get_text(annotate_dict, tmp_image, w, h):
     for ind in range(len(annotate_dict)):
         if "Start Of Table" in annotate_dict:
             del annotate_dict["Start Of Table"]
-        
         if "End Of Table" in annotate_dict:
             del annotate_dict["End Of Table"]
-
         coord = list(annotate_dict.values())
         labels = list(annotate_dict.keys())
         for crds, label in zip(coord, labels):
@@ -211,7 +209,6 @@ def get_text(annotate_dict, tmp_image, w, h):
     #    cv2.waitKey()
     #    cv2.imwrite('output.png', tmp4)
     return result
-
 
 def get_annotations_xlsx(path):
     df = pd.read_csv(path, header=None)
@@ -292,6 +289,7 @@ def find_table(tmp3, res, new_lst):
                 i += 1
         li.sort(key=lambda x: x[0])
         row = list()
+        contouredImage = tmp3.copy()
         for ele in li:
             x, y, w, h = ele
             col = sbi[y - 2 : y + h + 2, x - 2 : x + w + 2]

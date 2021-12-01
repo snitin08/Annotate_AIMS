@@ -33,11 +33,15 @@ window.onload = function () {
         if (key !== "ncols") {
           tempmap = new Map();
           for (let ele of value) {
+<<<<<<< HEAD
             if (
               ele["IMAGE_ACTUAL_WIDTH"] !== undefined ||
               ele["IMAGE_ACTUAL_HEIGHT"] !== undefined
             )
               continue;
+=======
+            if(ele["IMAGE_ACTUAL_WIDTH"]!==undefined || ele["IMAGE_ACTUAL_HEIGHT"] !== undefined)continue;
+>>>>>>> e0efb250e4a6b0dd41a8bc68a4b41f9540e6b422
             tempmap.set(ind.toString(), [
               ele["left"],
               ele["top"],
@@ -59,6 +63,7 @@ window.onload = function () {
     rect.startY = e.pageY - this.offsetTop;
     drag = true;
   }
+<<<<<<< HEAD
 
   function mouseUp() {
     drag = false;
@@ -75,6 +80,24 @@ window.onload = function () {
 
     console.log("Scaled", startX, startY, w, h);
 
+=======
+
+  function mouseUp() {
+    drag = false;
+    var annotation_table_body = document.getElementById(
+      "annotation_table_body"
+    );
+    console.log("Actual", rect.startX, rect.startY, rect.w, rect.h);
+    console.log("Actual dims", imgActualWidth, imgActualHeight);
+    console.log("Display dims", imgDisplayWidth, imgDisplayHeight);
+    var startX = Math.floor((rect.startX * imgActualWidth) / imgDisplayWidth);
+    var startY = Math.floor((rect.startY * imgActualHeight) / imgDisplayHeight);
+    var w = Math.floor((rect.w * imgActualWidth) / imgDisplayWidth);
+    var h = Math.floor((rect.h * imgActualHeight) / imgDisplayHeight);
+
+    console.log("Scaled", startX, startY, w, h);
+
+>>>>>>> e0efb250e4a6b0dd41a8bc68a4b41f9540e6b422
     $("#annotation_table_body").append(
       "<tr id='" +
         id +
@@ -184,6 +207,7 @@ function showPage(page_no) {
   imageObj.src = "/media/page-" + _CURRENT_PAGE.toString() + ".jpeg";
 
   if (UrlExists(imageObj.src) == false) {
+<<<<<<< HEAD
     if (page_no === 1) {
       alert("No PDF Uploaded, Please upload PDF and then continue");
       document.location.replace("upload_pdf");
@@ -195,6 +219,20 @@ function showPage(page_no) {
       $("#pdf-current-page").text(_CURRENT_PAGE);
       $("#pdf-next, #pdf-prev").removeAttr("disabled");
     }
+=======
+    if(page_no === 1){
+      alert("No PDF Uploaded, Please upload PDF and then continue");
+      document.location.replace('upload_pdf');
+      return;
+    }
+    else{
+      alert("This is Last Page");
+      --_CURRENT_PAGE;  
+      showPage(_CURRENT_PAGE);
+      $("#pdf-current-page").text(_CURRENT_PAGE);
+      $("#pdf-next, #pdf-prev").removeAttr("disabled");
+    }
+>>>>>>> e0efb250e4a6b0dd41a8bc68a4b41f9540e6b422
   } else {
     id = 0;
     imageObj.onload = function () {
@@ -332,6 +370,7 @@ function exportTableToExcel() {
       coordinate[4],
     ]);
   }
+<<<<<<< HEAD
   console.log(pageDimensions);
   output = new Map();
   for (var i in annotations) {
@@ -344,6 +383,20 @@ function exportTableToExcel() {
       tempmap["left"] = x[0];
       tempmap["top"] = x[1];
       tempmap["label"] = x[4];
+=======
+  console.log(pageDimensions)
+  output = new Map();
+  for (var i in annotations) {
+    output[i] = [];
+    for (let j of annotations[i]){
+      let tempmap = new Map();
+      x = j[1];
+      tempmap['width'] = x[2];
+      tempmap['height'] = x[3];
+      tempmap['left'] = x[0];
+      tempmap['top'] = x[1];
+      tempmap['label'] = x[4];
+>>>>>>> e0efb250e4a6b0dd41a8bc68a4b41f9540e6b422
       output[i].push(tempmap);
     }
     let tempmap = new Map();
@@ -355,7 +408,11 @@ function exportTableToExcel() {
     alert("Number of Columns cannot be negative");
     return;
   }
+<<<<<<< HEAD
   console.log(output);
+=======
+  console.log(output)
+>>>>>>> e0efb250e4a6b0dd41a8bc68a4b41f9540e6b422
   output["ncols"] = document.getElementById("noofcolumns").value;
   var string = JSON.stringify(output);
   //create a blob object representing the data as a JSON string

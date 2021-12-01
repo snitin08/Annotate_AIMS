@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 {"Page1":[{"width":242,"height":120,"left":179,"top":47,"label":"1"},{"width":525,"height":28,"left":51,"top":246,"label":"Start Of Table"},{"width":87,"height":25,"left":494,"top":608,"label":"rupee"},{"IMAGE_ACTUAL_WIDTH":2481,"IMAGE_ACTUAL_HEIGHT":3508}],"ncols":"5"}
+=======
+{"Page1":[{"width":145,"height":17,"left":243,"top":59,"label":"name"},{"width":71,"height":18,"left":282,"top":149,"label":"invoice"},{"IMAGE_ACTUAL_WIDTH":2550,"IMAGE_ACTUAL_HEIGHT":3301}],"ncols":"0"}
+>>>>>>> e0efb250e4a6b0dd41a8bc68a4b41f9540e6b422
