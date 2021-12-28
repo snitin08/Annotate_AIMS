@@ -187,7 +187,7 @@ def process_invoice(filename, templatename):
             extracted_text.append(result)
             if start_of_table is not None:
                 flg = False
-                cmd = f'"E:\Downloads\ImageMagic\ImageMagick-6.9.11-Q16-20201228T144714Z-001\ImageMagick-6.9.11-Q16\convert.exe" "{BASE_DIR}/media/page_1.jpeg" -type Grayscale -negate -define morphology:compose=darken -morphology Thinning "Rectangle:1x80+0+0<" -negate "{BASE_DIR}/media/page_1-t.jpeg"'
+                cmd = f'"C:\Program Files\ImageMagick-6.9.11-Q16\convert.exe" "{BASE_DIR}/media/page_1.jpeg" -type Grayscale -negate -define morphology:compose=darken -morphology Thinning "Rectangle:1x80+0+0<" -negate "{BASE_DIR}/media/page_1-t.jpeg"'
                 # print(cmd)
                 subprocess.call(cmd, shell=True)
                 new_img = cv2.imread(str(BASE_DIR) + "\\media\\page_1-t.jpeg")
