@@ -10,7 +10,7 @@ import regex as re
 IMAGE_WIDTH = 900
 IMAGE_HEIGHT = 1200
 
-# pytesseract.pytesseract.tesseract_cmd = "C:\\Program Files\\Tesseract-OCR\\tesseract.exe"
+pytesseract.pytesseract.tesseract_cmd = "C:\\Program Files\\Tesseract-OCR\\tesseract.exe"
 
 
 def get_annotations_json(path):

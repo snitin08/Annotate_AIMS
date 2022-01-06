@@ -138,9 +138,9 @@ def process_receipt(request):
             table = []
         if below_table is None:
             below_table = []
-        print(annotation)
-        print(table)
-        print(below_table)
+        # print(annotation)
+        # print(table)
+        # print(below_table)
         context = {
             "annotation": annotation,
             "table": table,
@@ -169,52 +169,53 @@ def process_invoice(filename, templatename):
         below_tab_result = []
         tab_result = []
         for i, image in enumerate(images):
-            if "Start Of Table" in annotate_dict["Page" + str(i + 1)]:
-                start_of_table = annotate_dict["Page" + str(i + 1)]["Start Of Table"][1]
-            else:
-                start_of_table = None
+            if "Page" + str(i + 1) in annotate_dict.keys():
+                if "Start Of Table" in annotate_dict["Page" + str(i + 1)]:
+                    start_of_table = annotate_dict["Page" + str(i + 1)]["Start Of Table"][1]
+                else:
+                    start_of_table = None
 
-            if "End Of Table" in annotate_dict["Page" + str(i + 1)]:
-                end_of_table = annotate_dict["Page" + str(i + 1)]["End Of Table"][3]
-            else:
-                end_of_table = float('inf')
+                if "End Of Table" in annotate_dict["Page" + str(i + 1)]:
+                    end_of_table = annotate_dict["Page" + str(i + 1)]["End Of Table"][3]
+                else:
+                    end_of_table = float('inf')
 
-            image.save(str(BASE_DIR) + "\\media\\page_1.jpeg", "JPEG")
-            document_image = cv2.imread(str(BASE_DIR) + "\\media\\page_1.jpeg")
-            result = get_text(
-                annotate_dict["Page" + str(i + 1)], document_image, 900, 1200
-            )
-            extracted_text.append(result)
-            if start_of_table is not None:
-                flg = False
-                cmd = f'"C:\Program Files\ImageMagick-6.9.11-Q16\convert.exe" "{BASE_DIR}/media/page_1.jpeg" -type Grayscale -negate -define morphology:compose=darken -morphology Thinning "Rectangle:1x80+0+0<" -negate "{BASE_DIR}/media/page_1-t.jpeg"'
-                # print(cmd)
-                subprocess.call(cmd, shell=True)
-                new_img = cv2.imread(str(BASE_DIR) + "\\media\\page_1-t.jpeg")
-                new_img2 = cv2.imread(str(BASE_DIR) + "\\media\\page_1.jpeg")
-                new_img2 = cv2.bilateralFilter(new_img2, 5, 75, 75)
-                #        print(annotate_dict)
-                #        print(new_img.shape[0],new_img.shape)
-                rgb = np.copy(new_img)
-                # print("RGB", rgb.shape)
-                new_crd = table_detect(rgb)
-                NO_OF_COLS = annotate_dict["ncols"]
-                new_lst = list()
-                below_table = list()
-                for x in new_crd:
-                    if colfilter(x, rgb, NO_OF_COLS, start_of_table, end_of_table) == int(NO_OF_COLS):
-                        new_lst.append(x)
-                    elif x[3] > start_of_table:
-                        below_table.append(x)
-                    else:
-                        pass
-                tmp3 = np.copy(rgb)
-                # if len(new_lst)>=1:
-                #     new_lst = new_lst[1:]
-                tab_result += find_table(tmp3, new_img2, new_lst)
-                if flg == False:
-                    below_tab_result += find_below_table(np.copy(new_img2), below_table)
-                    flg = True
+                image.save(str(BASE_DIR) + "\\media\\page_1.jpeg", "JPEG")
+                document_image = cv2.imread(str(BASE_DIR) + "\\media\\page_1.jpeg")
+                result = get_text(
+                    annotate_dict["Page" + str(i + 1)], document_image, 900, 1200
+                )
+                extracted_text.append(result)
+                if start_of_table is not None:
+                    flg = False
+                    cmd = f'"C:\Program Files\ImageMagick-6.9.11-Q16\convert.exe" "{BASE_DIR}/media/page_1.jpeg" -type Grayscale -negate -define morphology:compose=darken -morphology Thinning "Rectangle:1x80+0+0<" -negate "{BASE_DIR}/media/page_1-t.jpeg"'
+                    # print(cmd)
+                    subprocess.call(cmd, shell=True)
+                    new_img = cv2.imread(str(BASE_DIR) + "\\media\\page_1-t.jpeg")
+                    new_img2 = cv2.imread(str(BASE_DIR) + "\\media\\page_1.jpeg")
+                    new_img2 = cv2.bilateralFilter(new_img2, 5, 75, 75)
+                    #        print(annotate_dict)
+                    #        print(new_img.shape[0],new_img.shape)
+                    rgb = np.copy(new_img)
+                    # print("RGB", rgb.shape)
+                    new_crd = table_detect(rgb)
+                    NO_OF_COLS = annotate_dict["ncols"]
+                    new_lst = list()
+                    below_table = list()
+                    for x in new_crd:
+                        if colfilter(x, rgb, NO_OF_COLS, start_of_table, end_of_table) == int(NO_OF_COLS):
+                            new_lst.append(x)
+                        elif x[3] > start_of_table:
+                            below_table.append(x)
+                        else:
+                            pass
+                    tmp3 = np.copy(rgb)
+                    # if len(new_lst)>=1:
+                    #     new_lst = new_lst[1:]
+                    tab_result += find_table(tmp3, new_img2, new_lst)
+                    if flg == False:
+                        below_tab_result += find_below_table(np.copy(new_img2), below_table)
+                        flg = True
 
         return extracted_text, tab_result, below_tab_result
     return None, None, None
