@@ -1,3 +1,4 @@
+from turtle import width
 from numpy.core.fromnumeric import size
 import pytesseract
 from pytesseract import Output
@@ -10,7 +11,7 @@ import regex as re
 IMAGE_WIDTH = 900
 IMAGE_HEIGHT = 1200
 
-# pytesseract.pytesseract.tesseract_cmd = "C:\\Program Files\\Tesseract-OCR\\tesseract.exe"
+#pytesseract.pytesseract.tesseract_cmd = "E:\\Downloads\\Tesseract OCR\\tesseract.exe"
 
 
 def get_annotations_json(path):
@@ -38,14 +39,10 @@ def get_annotations_json(path):
 # get_annotations_json(r"E:\Nitin\RVCE\Projects\PDF-OCR\annotation_tool\annotation\media\data.json")
 
 
-def colfilter(crds, image, NO_OF_COLS, ye, ye1):
+def colfilter(crds, image, NO_OF_COLS, ye):
     image = cv2.resize(image, (IMAGE_WIDTH, IMAGE_HEIGHT))
     x, y, x1, y1 = crds
-    print(y1, ye1, ye)
     if y1 <= ye:
-        return 0
-    if y1 > ye1:
-        # print("AAAA")
         return 0
     tmp3 = np.copy(image)
     sub_image1 = tmp3[y:y1, x:x1]
@@ -100,11 +97,11 @@ def colfilter(crds, image, NO_OF_COLS, ye, ye1):
     #    cv2.waitKey()
     #    print(ct,end = '  ')
     # print(len(li))
+
     return len(li)
 
 
 def table_detect(rgb):
-
     rgb = cv2.resize(rgb, (IMAGE_WIDTH, IMAGE_HEIGHT))
     small = cv2.cvtColor(rgb, cv2.COLOR_BGR2GRAY)
     kernel = np.ones((1, 9), np.uint8)
@@ -180,8 +177,6 @@ def get_text(annotate_dict, tmp_image, w, h):
     for ind in range(len(annotate_dict)):
         if "Start Of Table" in annotate_dict:
             del annotate_dict["Start Of Table"]
-        if "End Of Table" in annotate_dict:
-            del annotate_dict["End Of Table"]
         coord = list(annotate_dict.values())
         labels = list(annotate_dict.keys())
         for crds, label in zip(coord, labels):
@@ -232,16 +227,30 @@ def get_annotations_xlsx(path):
 
 
 def find_table(tmp3, res, new_lst):
+    original_image = tmp3.copy()
+    # get height and width of image
+    height, width = original_image.shape[:2]
     tmp3 = cv2.resize(tmp3, (IMAGE_WIDTH, IMAGE_HEIGHT))
     res = cv2.resize(res, (IMAGE_WIDTH, IMAGE_HEIGHT))
     tab_result = list()
     marked_image = tmp3.copy()
     for crds in new_lst:
         x, y, x1, y1 = crds
-        sub_image = tmp3[y - 1 : y1 + 1, x - 1 : x1 + 1]
-        resultant = res[y - 1 : y1 + 1, x - 1 : x1 + 1]
-        #        cv2.imshow("Each Row", sub_image)
-        #        cv2.waitKey()
+        # print original coordinates
+        # print("W H", width, height)
+        # print("Original: ", x, y, x1, y1)
+
+        # scale the coordinates to original image
+        x = int(x * width / IMAGE_WIDTH)
+        y = int(y * height / IMAGE_HEIGHT)
+        x1 = int(x1 * width / IMAGE_WIDTH)
+        y1 = int(y1 * height / IMAGE_HEIGHT)
+        sub_image = original_image[y - 1 : y1 + 1, x - 1 : x1 + 1]
+        resultant = original_image[y - 1 : y1 + 1, x - 1 : x1 + 1]
+        # print scaled coordinates
+        # print("Scaled: ", x, y, x1, y1)
+        # cv2.imshow("Each Row", sub_image)
+        # cv2.waitKey()
         tmp_image = cv2.cvtColor(sub_image, cv2.COLOR_BGR2GRAY)
         _, th = cv2.threshold(tmp_image, 0, 255.0, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
         kernel = np.ones((3, 5), np.uint8)
@@ -322,11 +331,22 @@ def find_table(tmp3, res, new_lst):
     return tab_result
 
 
+def scale_coords(x, y, x1, y1, width, height):
+    x = int(x * width / IMAGE_WIDTH)
+    y = int(y * height / IMAGE_HEIGHT)
+    x1 = int(x1 * width / IMAGE_WIDTH)
+    y1 = int(y1 * height / IMAGE_HEIGHT)
+    return x, y, x1, y1
+
+
 def find_below_table(tmp_img, x):
-    tmp_img = cv2.resize(tmp_img, (IMAGE_WIDTH, IMAGE_HEIGHT))
+    # tmp_img = cv2.resize(tmp_img, (IMAGE_WIDTH, IMAGE_HEIGHT))
+    height, width = tmp_img.shape[:2]
     below_tab_result = list()
     for c in x:
         x, y, x1, y1 = c
+        # scale image coordinates
+        x, y, x1, y1 = scale_coords(x, y, x1, y1, width, height)
         # cv2.rectangle(tmp_img, (x-1, y-1), (x1+1, y1+1), (0, 0, 255), 1)
         tmp = tmp_img[y - 2 : y1 + 2, x - 2 : x1 + 2]
         tmp = cv2.resize(
